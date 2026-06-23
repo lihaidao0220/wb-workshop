@@ -1,0 +1,1474 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WorkBuddy 从 0 到 1 · 工作坊入门手册</title>
+  <style>
+    :root {
+      --brand:       #1A54D6;
+      --brand-light: #EAF0FF;
+      --brand-dark:  #0F35A0;
+      --accent:      #00B896;
+      --accent-light:#E0FAF5;
+      --warn:        #FF6B35;
+      --warn-light:  #FFF0EB;
+      --ok:          #16A34A;
+      --ok-light:    #DCFCE7;
+      --neutral-900: #0F1A2E;
+      --neutral-700: #374151;
+      --neutral-500: #6B7280;
+      --neutral-300: #D1D5DB;
+      --neutral-200: #E5E7EB;
+      --neutral-100: #F3F4F6;
+      --neutral-50:  #F9FAFB;
+      --white:       #FFFFFF;
+      --r-sm: 8px; --r-md: 12px; --r-lg: 16px; --r-xl: 24px;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,.07);
+      --shadow-md: 0 4px 14px rgba(0,0,0,.09);
+      --shadow-lg: 0 8px 28px rgba(0,0,0,.12);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Helvetica Neue", sans-serif;
+      background: var(--neutral-50);
+      color: var(--neutral-700);
+      line-height: 1.75;
+      font-size: 15px;
+    }
+
+    /* ── TOC sidebar ── */
+    .layout { display: flex; gap: 0; max-width: 1160px; margin: 0 auto; }
+    .toc {
+      width: 220px; flex-shrink: 0;
+      position: sticky; top: 0; height: 100vh; overflow-y: auto;
+      padding: 32px 0 40px 24px;
+      border-right: 1px solid var(--neutral-200);
+      background: var(--white);
+    }
+    .toc-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--neutral-500); margin-bottom: 14px; }
+    .toc a {
+      display: block; padding: 5px 10px 5px 0; font-size: 13px; color: var(--neutral-500);
+      text-decoration: none; border-left: 2px solid transparent; padding-left: 12px;
+      transition: all .15s; line-height: 1.45;
+    }
+    .toc a:hover, .toc a.active { color: var(--brand); border-left-color: var(--brand); }
+    .toc a.sub { padding-left: 22px; font-size: 12px; }
+
+    /* ── main content ── */
+    .main { flex: 1; min-width: 0; padding: 0 32px 80px; }
+    @media (max-width: 768px) {
+      .layout { display: block; }
+      .toc { display: none; }
+      .main { padding: 0 16px 60px; }
+    }
+
+    /* ── hero ── */
+    .hero {
+      background: linear-gradient(135deg, #0A2880 0%, #1A54D6 50%, #2E7BF0 100%);
+      color: #fff; padding: 52px 36px 44px; border-radius: 0 0 var(--r-xl) var(--r-xl);
+      position: relative; overflow: hidden;
+    }
+    .hero::after {
+      content: '';
+      position: absolute; right: -60px; top: -60px;
+      width: 300px; height: 300px; border-radius: 50%;
+      background: rgba(255,255,255,.05); pointer-events: none;
+    }
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.25);
+      border-radius: 99px; padding: 4px 14px; font-size: 12px; letter-spacing: .4px;
+      margin-bottom: 18px;
+    }
+    .hero h1 { font-size: clamp(22px, 3.5vw, 36px); font-weight: 800; line-height: 1.25; margin-bottom: 12px; }
+    .hero p  { font-size: 15px; opacity: .82; max-width: 520px; margin-bottom: 28px; }
+    .hero-chips { display: flex; flex-wrap: wrap; gap: 10px; }
+    .hero-chip {
+      background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.2);
+      border-radius: 99px; padding: 4px 14px; font-size: 12px;
+    }
+
+    /* ── section ── */
+    .section { padding-top: 52px; }
+    .section-anchor { position: relative; top: -20px; }
+    .sec-num {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 32px; height: 32px; border-radius: 50%;
+      background: var(--brand); color: #fff; font-size: 14px; font-weight: 700;
+      margin-right: 10px; flex-shrink: 0;
+    }
+    .section-title {
+      display: flex; align-items: center; margin-bottom: 20px;
+      font-size: 21px; font-weight: 800; color: var(--neutral-900);
+    }
+
+    /* ── card ── */
+    .card {
+      background: var(--white); border-radius: var(--r-lg);
+      padding: 24px 26px; border: 1px solid var(--neutral-200);
+      box-shadow: var(--shadow-sm);
+    }
+    .card + .card { margin-top: 14px; }
+
+    /* ── grid ── */
+    .g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .g3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; }
+    @media(max-width:640px){ .g2,.g3 { grid-template-columns: 1fr; } }
+    @media(min-width:641px) and (max-width:860px) { .g3 { grid-template-columns: 1fr 1fr; } }
+
+    /* ── step list ── */
+    .steps { display: flex; flex-direction: column; gap: 0; }
+    .step {
+      display: grid; grid-template-columns: 42px 1fr; gap: 0;
+      position: relative;
+    }
+    .step:not(:last-child) .step-num-col::after {
+      content: ''; position: absolute; left: 20px; top: 42px; bottom: 0;
+      width: 2px; background: var(--neutral-200);
+    }
+    .step-num-col { display: flex; flex-direction: column; align-items: center; padding-top: 2px; }
+    .step-circle {
+      width: 34px; height: 34px; border-radius: 50%; background: var(--brand);
+      color: #fff; font-size: 14px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0; z-index: 1;
+    }
+    .step-body { padding: 2px 0 26px 16px; }
+    .step-body h4 { font-size: 15px; font-weight: 700; color: var(--neutral-900); margin-bottom: 4px; }
+    .step-body p  { font-size: 13.5px; color: var(--neutral-600, #4B5563); line-height: 1.65; }
+    .step-body ul { margin-top: 6px; padding-left: 18px; }
+    .step-body ul li { font-size: 13.5px; margin-bottom: 3px; }
+
+    /* ── callout ── */
+    .callout {
+      border-radius: var(--r-sm); padding: 14px 18px;
+      font-size: 14px; line-height: 1.65; margin: 14px 0;
+      display: flex; gap: 10px; align-items: flex-start;
+    }
+    .callout-icon { font-size: 16px; flex-shrink: 0; line-height: 1.7; }
+    .callout.info  { background: var(--brand-light); border-left: 3px solid var(--brand); }
+    .callout.ok    { background: var(--ok-light);    border-left: 3px solid var(--ok); }
+    .callout.warn  { background: var(--warn-light);  border-left: 3px solid var(--warn); color: #7D3010; }
+    .callout.tip   { background: #FFF8E1;            border-left: 3px solid #F59E0B; }
+
+    /* ── tag ── */
+    .tag {
+      display: inline-block; padding: 2px 10px; border-radius: 99px;
+      font-size: 11px; font-weight: 700; letter-spacing: .3px;
+    }
+    .tag-blue   { background: var(--brand-light); color: var(--brand-dark); }
+    .tag-green  { background: var(--ok-light);    color: #15803D; }
+    .tag-orange { background: var(--warn-light);  color: #C44A1A; }
+    .tag-gray   { background: var(--neutral-100); color: var(--neutral-500); }
+
+    /* ── inline code ── */
+    code {
+      background: var(--neutral-100); border: 1px solid var(--neutral-200);
+      padding: 1px 6px; border-radius: 4px; font-family: "SF Mono", Consolas, monospace;
+      font-size: 13px; color: var(--brand-dark);
+    }
+
+    /* ── table ── */
+    .tbl { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+    .tbl th {
+      background: var(--neutral-900); color: #fff; padding: 10px 14px;
+      text-align: left; font-weight: 600; font-size: 12.5px;
+    }
+    .tbl th:first-child { border-radius: var(--r-sm) 0 0 0; }
+    .tbl th:last-child  { border-radius: 0 var(--r-sm) 0 0; }
+    .tbl td { padding: 10px 14px; border-bottom: 1px solid var(--neutral-200); vertical-align: top; }
+    .tbl tr:last-child td { border-bottom: none; }
+    .tbl tr:nth-child(even) td { background: var(--neutral-50); }
+
+    /* ── mode cards ── */
+    .mode-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-top: 14px; }
+    @media(max-width:560px){ .mode-grid { grid-template-columns: 1fr; } }
+    .mode-card {
+      border: 2px solid var(--neutral-200); border-radius: var(--r-md);
+      padding: 18px 16px; background: var(--white); text-align: center;
+    }
+    .mode-card.highlight { border-color: var(--brand); background: var(--brand-light); }
+    .mode-card .mc-name { font-size: 18px; font-weight: 800; color: var(--neutral-900); }
+    .mode-card .mc-sub  { font-size: 11px; color: var(--neutral-500); margin: 2px 0 10px; }
+    .mode-card p { font-size: 13px; color: var(--neutral-700); line-height: 1.6; }
+
+    /* ── feature pill cards ── */
+    .feat-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; }
+    @media(max-width:640px){ .feat-grid { grid-template-columns: 1fr 1fr; } }
+    @media(max-width:400px){ .feat-grid { grid-template-columns: 1fr; } }
+    .feat-card {
+      background: var(--white); border: 1px solid var(--neutral-200);
+      border-radius: var(--r-md); padding: 18px 16px; box-shadow: var(--shadow-sm);
+    }
+    .feat-icon { font-size: 26px; margin-bottom: 10px; display: block; }
+    .feat-card h4 { font-size: 14px; font-weight: 700; color: var(--neutral-900); margin-bottom: 4px; }
+    .feat-card p  { font-size: 13px; color: var(--neutral-500); line-height: 1.6; }
+
+    /* ── comparison: before/after ── */
+    .ba-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border-radius: var(--r-md); overflow: hidden; border: 1px solid var(--neutral-200); }
+    .ba-col { padding: 16px 18px; }
+    .ba-col.before { background: #FFF8F6; border-right: 1px solid var(--neutral-200); }
+    .ba-col.after  { background: var(--ok-light); }
+    .ba-label { font-size: 11px; font-weight: 700; letter-spacing: .5px; text-transform: uppercase; margin-bottom: 10px; display: block; }
+    .ba-col.before .ba-label { color: #C44A1A; }
+    .ba-col.after  .ba-label { color: #15803D; }
+    .ba-col ul { padding-left: 16px; }
+    .ba-col ul li { font-size: 13px; margin-bottom: 4px; line-height: 1.55; }
+    @media(max-width:520px){ .ba-grid { grid-template-columns: 1fr; } .ba-col.before{ border-right:none; border-bottom:1px solid var(--neutral-200); } }
+
+    /* ── connector grid ── */
+    .conn-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px,1fr)); gap: 10px; margin-top: 14px; }
+    .conn-item {
+      background: var(--neutral-50); border: 1px solid var(--neutral-200);
+      border-radius: var(--r-sm); padding: 12px 10px; text-align: center;
+      font-size: 13px; font-weight: 600; color: var(--neutral-700);
+    }
+    .conn-item .ci { font-size: 22px; display: block; margin-bottom: 4px; }
+
+    /* ── divider ── */
+    .divider { height: 1px; background: var(--neutral-200); margin: 22px 0; }
+
+    /* ── token save tips ── */
+    .token-tip {
+      display: flex; gap: 14px; align-items: flex-start;
+      padding: 14px 0; border-bottom: 1px solid var(--neutral-200);
+    }
+    .token-tip:last-child { border-bottom: none; padding-bottom: 0; }
+    .tt-num {
+      width: 28px; height: 28px; border-radius: 50%; background: var(--accent);
+      color: #fff; font-size: 13px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .tt-body h5 { font-size: 14px; font-weight: 700; color: var(--neutral-900); margin-bottom: 3px; }
+    .tt-body p  { font-size: 13px; color: var(--neutral-500); line-height: 1.6; }
+
+    /* ── checklist ── */
+    .checklist { list-style: none; padding: 0; }
+    .checklist li {
+      display: flex; gap: 8px; align-items: flex-start;
+      padding: 7px 0; border-bottom: 1px solid var(--neutral-200); font-size: 13.5px;
+    }
+    .checklist li:last-child { border-bottom: none; }
+    .checklist li::before {
+      content: '✓'; width: 18px; height: 18px; border-radius: 50%;
+      background: var(--accent); color: #fff; font-size: 10px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px;
+    }
+
+    /* ── quote ── */
+    .quote {
+      border-left: 4px solid var(--brand); background: var(--brand-light);
+      padding: 16px 18px 16px 22px; border-radius: 0 var(--r-sm) var(--r-sm) 0;
+      font-size: 15px; font-style: italic; color: var(--neutral-900); position: relative;
+      margin: 16px 0;
+    }
+    .quote::before {
+      content: '"'; font-size: 52px; color: var(--brand); opacity: .18;
+      position: absolute; top: -6px; left: 8px; font-family: Georgia,serif; line-height: 1;
+    }
+    .quote cite { display: block; font-size: 12px; font-style: normal; color: var(--neutral-500); margin-top: 8px; }
+
+    /* ── scenario card ── */
+    .scene-card {
+      background: var(--neutral-50); border: 1px solid var(--neutral-200);
+      border-radius: var(--r-md); padding: 18px 20px;
+    }
+    .scene-card h4 { font-size: 14px; font-weight: 700; color: var(--neutral-900); margin-bottom: 8px; }
+    .scene-step { display: flex; gap: 8px; align-items: flex-start; margin-bottom: 6px; font-size: 13px; }
+    .ss-n {
+      width: 20px; height: 20px; border-radius: 50%; background: var(--brand);
+      color: #fff; font-size: 10px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px;
+    }
+
+    /* ── cta ── */
+    .cta {
+      background: linear-gradient(135deg, #0A2880 0%, #1A54D6 100%);
+      border-radius: var(--r-xl); padding: 44px 36px; text-align: center;
+      color: #fff; margin-top: 56px;
+    }
+    .cta h2 { font-size: 24px; font-weight: 800; margin-bottom: 10px; }
+    .cta p  { opacity: .82; font-size: 15px; margin-bottom: 26px; }
+    .cta-btn {
+      display: inline-block; padding: 13px 32px; background: #fff; color: var(--brand);
+      font-weight: 700; font-size: 15px; border-radius: 99px;
+      text-decoration: none; box-shadow: var(--shadow-md); transition: transform .15s;
+    }
+    .cta-btn:hover { transform: translateY(-2px); }
+    .cta-note { margin-top: 18px; font-size: 12px; opacity: .6; }
+
+    .print-note {
+      font-size: 12px; color: var(--neutral-500); text-align: center;
+      margin-top: 28px; padding-top: 18px; border-top: 1px dashed var(--neutral-200);
+    }
+    @media print { .toc,.cta { display: none; } }
+  </style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-eyebrow">🤝 腾讯云文化传媒行业线 × WorkBuddy · 工作坊入门手册</div>
+  <h1>WorkBuddy 从 0 到 1<br/>—— 传媒人的 AI 提效完全入门</h1>
+  <p>从下载到用上第一个自动化工作流，一份手册搞定全流程</p>
+  <div class="hero-chips">
+    <span class="hero-chip">📥 下载安装</span>
+    <span class="hero-chip">🖥️ 界面导览</span>
+    <span class="hero-chip">✍️ 提示词写法</span>
+    <span class="hero-chip">🔧 搭建 Skill</span>
+    <span class="hero-chip">🔌 连接器打通</span>
+    <span class="hero-chip">💰 节省 Token</span>
+    <span class="hero-chip">📱 手机远程控制</span>
+  </div>
+</div>
+
+<div class="layout">
+
+  <!-- TOC -->
+  <nav class="toc" id="toc">
+    <div class="toc-title">目录</div>
+    <a href="#s0">01 · AI 时代背景</a>
+    <a href="#s0a" class="sub">· Chat → Coding → Agent</a>
+    <a href="#s0b" class="sub">· 三年关键演进</a>
+    <a href="#s1">02 · 认识 WorkBuddy</a>
+    <a href="#s2">03 · 下载与安装</a>
+    <a href="#s3">04 · 界面全解析</a>
+    <a href="#s3" class="sub">· 三大场景模式</a>
+    <a href="#s3b" class="sub">· 三种工作模式</a>
+    <a href="#s3c" class="sub">· 左侧功能区</a>
+    <a href="#s4">05 · 建立工作空间</a>
+    <a href="#s5">06 · 如何输入提示词</a>
+    <a href="#s6">07 · 模型选择指南</a>
+    <a href="#s7">08 · 专家与专家团</a>
+    <a href="#s8">09 · 搭建技能（Skill）</a>
+    <a href="#s9">10 · 连接器（MCP）打通</a>
+    <a href="#s10">11 · 节省 Token 的方法</a>
+    <a href="#s11">12 · 重要设置清单</a>
+    <a href="#s12">13 · 手机远程控制</a>
+    <a href="#s13">14 · 实战演示案例</a>
+  </nav>
+
+  <main class="main">
+
+    <!-- ===== S0 ===== -->
+    <div class="section" id="s0">
+      <div class="section-anchor"></div>
+      <div class="section-title"><span class="sec-num">1</span>AI 时代背景：为什么 Agent 是下一个拐点</div>
+
+      <div class="card">
+        <p style="margin-bottom:18px; font-size:15px; color:var(--neutral-700); line-height:1.8;">过去三年，AI 并不是一直在做同一件事——它经历了三次范式跃迁，每一次都在改变「AI 能为人做什么」这个问题的答案。</p>
+
+        <!-- 三阶段演进 -->
+        <div id="s0a" style="display:flex; flex-direction:column; gap:0; margin-bottom:24px;">
+
+          <div style="display:grid; grid-template-columns:72px 1fr; gap:0;">
+            <div style="display:flex; flex-direction:column; align-items:center; padding-top:2px;">
+              <div style="width:38px; height:38px; border-radius:50%; background:#6B7280; color:#fff; font-size:13px; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; z-index:1;">1</div>
+              <div style="width:2px; flex:1; background:var(--neutral-200); margin:4px 0;"></div>
+            </div>
+            <div style="padding:2px 0 24px 16px;">
+              <div style="font-size:13px; font-weight:700; color:var(--neutral-900); margin-bottom:3px;">Chat 阶段 · 2022–2023</div>
+              <div style="font-size:13px; color:var(--neutral-500); line-height:1.65;">以 ChatGPT 为代表，AI 第一次能流畅地「说话」——回答问题、写文章、做翻译。但它只能被动响应，说完就结束，无法主动行动。</div>
+              <div style="margin-top:8px; display:flex; gap:6px; flex-wrap:wrap;">
+                <span class="tag tag-gray">问答式交互</span>
+                <span class="tag tag-gray">单轮对话</span>
+                <span class="tag tag-gray">纯文本输出</span>
+              </div>
+            </div>
+          </div>
+
+          <div style="display:grid; grid-template-columns:72px 1fr; gap:0;">
+            <div style="display:flex; flex-direction:column; align-items:center; padding-top:2px;">
+              <div style="width:38px; height:38px; border-radius:50%; background:#1A54D6; color:#fff; font-size:13px; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; z-index:1;">2</div>
+              <div style="width:2px; flex:1; background:var(--neutral-200); margin:4px 0;"></div>
+            </div>
+            <div style="padding:2px 0 24px 16px;">
+              <div style="font-size:13px; font-weight:700; color:var(--neutral-900); margin-bottom:3px;">Coding 阶段 · 2023–2024</div>
+              <div style="font-size:13px; color:var(--neutral-500); line-height:1.65;">GitHub Copilot、Cursor 等工具让 AI 开始「做事」——写代码、改 Bug、补全逻辑。AI 从对话框走进了真实工作流，但主要服务技术人群。</div>
+              <div style="margin-top:8px; display:flex; gap:6px; flex-wrap:wrap;">
+                <span class="tag tag-blue">代码生成与补全</span>
+                <span class="tag tag-blue">开发工具集成</span>
+                <span class="tag tag-blue">技术岗专属</span>
+              </div>
+            </div>
+          </div>
+
+          <div style="display:grid; grid-template-columns:72px 1fr; gap:0;">
+            <div style="display:flex; flex-direction:column; align-items:center; padding-top:2px;">
+              <div style="width:38px; height:38px; border-radius:50%; background:#00B896; color:#fff; font-size:13px; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; z-index:1;">3</div>
+            </div>
+            <div style="padding:2px 0 0 16px;">
+              <div style="font-size:13px; font-weight:700; color:var(--neutral-900); margin-bottom:3px;">Agent 阶段 · 2025 至今 <span style="background:var(--ok-light); color:#15803D; font-size:11px; font-weight:700; padding:1px 8px; border-radius:99px; margin-left:4px;">现在</span></div>
+              <div style="font-size:13px; color:var(--neutral-500); line-height:1.65;">AI 开始「自主完成任务」——拆解目标、调用工具、跨应用联动、循环执行到完成。不再需要技术背景，任何人都能用自然语言驱动 AI 完成复杂的多步骤工作流。</div>
+              <div style="margin-top:8px; display:flex; gap:6px; flex-wrap:wrap;">
+                <span class="tag tag-green">自主规划执行</span>
+                <span class="tag tag-green">跨工具联动</span>
+                <span class="tag tag-green">全岗位适用</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- 三年关键变化 -->
+        <div id="s0b">
+          <h3 style="font-size:15px; font-weight:700; color:var(--neutral-900); margin-bottom:14px;">🔑 过去三年，三个关键变化</h3>
+          <div class="g3">
+            <div class="feat-card">
+              <span class="feat-icon">📉</span>
+              <h4>成本断崖式下降</h4>
+              <p>GPT-4 级别能力的调用成本三年内下降超过 99%，AI 从「用不起」变成「随便用」</p>
+            </div>
+            <div class="feat-card">
+              <span class="feat-icon">🌐</span>
+              <h4>模型能力全面普惠</h4>
+              <p>国产大模型（DeepSeek、混元、Kimi 等）快速追平，国内用户无需翻墙即可获得顶级 AI 能力</p>
+            </div>
+            <div class="feat-card">
+              <span class="feat-icon">🔗</span>
+              <h4>工具集成成为标配</h4>
+              <p>AI 不再孤立存在，通过 MCP 协议可与几乎所有 SaaS 工具打通，形成真正可用的自动化工作流</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout info" style="margin-top:20px;">
+          <span class="callout-icon">💡</span>
+          <div>对传媒行业来说，Agent 阶段意味着：<strong>写稿、校对、数据汇总、会议纪要、发邮件这些日常工作，都可以交给 AI 自动完成</strong>——不需要懂技术，只需要说清楚你想要什么。</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== S1 ===== -->
+    <div class="section" id="s1">
+      <div class="section-anchor"></div>
+      <div class="section-title"><span class="sec-num">2</span>认识 WorkBuddy：不只是聊天 AI</div>
+
+      <div class="card">
+        <div class="quote">
+          对于绝大多数人来说，Agent 的核心价值不是帮你写出最牛逼的代码，而是帮你把每天那些重复的、琐碎的、让你浑身难受的办公任务给自动化掉。
+          <cite>—— 数字生命卡兹克，腾讯新闻科技领域内容作者</cite>
+        </div>
+
+        <p style="margin-bottom:16px;">WorkBuddy 是腾讯推出的 AI Agent 产品。与普通 AI 聊天工具最大的不同是：它不只是「回答」，而是真正帮你「做事」——自动拆解任务、调用工具、操作文件、联动多个应用。</p>
+
+        <div class="g3">
+          <div class="feat-card">
+            <span class="feat-icon">🤖</span>
+            <h4>Agent 模式</h4>
+            <p>自主规划执行步骤，全程可观察、可干预</p>
+          </div>
+          <div class="feat-card">
+            <span class="feat-icon">🔧</span>
+            <h4>Skill 技能生态</h4>
+            <p>100+ 现成技能，也能自己封装工作流一键复用</p>
+          </div>
+          <div class="feat-card">
+            <span class="feat-icon">🔌</span>
+            <h4>连接器打通</h4>
+            <p>腾讯文档、QQ 邮箱、腾讯会议等工具无缝联动</p>
+          </div>
+          <div class="feat-card">
+            <span class="feat-icon">📱</span>
+            <h4>微信远程操控</h4>
+            <p>手机发指令，电脑后台自动执行</p>
+          </div>
+          <div class="feat-card">
+            <span class="feat-icon">⏰</span>
+            <h4>自动化定时任务</h4>
+            <p>设好触发条件，每天自动跑，早上醒来任务已完成</p>
+          </div>
+          <div class="feat-card">
+            <span class="feat-icon">🧠</span>
+            <h4>对话记忆</h4>
+            <p>越用越懂你，自动记住习惯和偏好，减少重复交代</p>
+          </div>
+        </div>
+
+        <div class="callout info" style="margin-top:18px;">
+          <span class="callout-icon">💡</span>
+          <div><strong>适合谁</strong>：不想折腾开发环境、需要覆盖日常办公七八成需求的国内用户。微信扫码登录，下载即用，完全不需要技术背景。</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== S2 ===== -->
+    <div class="section" id="s2">
+      <div class="section-anchor"></div>
+      <div class="section-title"><span class="sec-num">3</span>下载与安装</div>
+
+      <div class="card">
+        <div class="steps">
+          <div class="step">
+            <div class="step-num-col"><div class="step-circle">1</div></div>
+            <div class="step-body">
+              <h4>访问官网</h4>
+              <p>打开浏览器，访问 <strong>workbuddy.cn</strong>，点击下载按钮</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num-col"><div class="step-circle">2</div></div>
+            <div class="step-body">
+              <h4>选择系统版本</h4>
+              <p>支持 <strong>macOS</strong>（Apple Silicon / Intel）和 <strong>Windows</strong>，根据你的系统选择对应版本下载</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num-col"><div class="step-circle">3</div></div>
+            <div class="step-body">
+              <h4>正常安装</h4>
+              <p>Mac：将应用拖入 Applications 文件夹；Windows：双击安装包按提示完成安装</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num-col"><div class="step-circle">4</div></div>
+            <div class="step-body">
+              <h4>微信扫码登录</h4>
+              <p>打开 WorkBuddy，选择<strong>微信扫码登录</strong>——无需注册账号，扫一下即可进入</p>
+              <div class="callout ok" style="margin-top:10px;">
+                <span class="callout-icon">✅</span>
+                <div>这一步是 WorkBuddy 对国内用户最友好的设计之一：不需要手机号注册，微信即账号。</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== S3 ===== -->
+    <div class="section" id="s3">
+      <div class="section-anchor"></div>
+      <div class="section-title"><span class="sec-num">4</span>界面全解析</div>
+
+      <div class="card">
+        <h3 style="font-size:16px;font-weight:700;color:var(--neutral-900);margin-bottom:14px;">🖥️ 三大场景模式（对话框上方切换）</h3>
+        <p style="margin-bottom:14px;">进入后的中央区域是主对话区，顶部可切换三种场景模式，每种模式下方都有对应的<strong>快捷模板</strong>，点击后直接替换内容发送即可：</p>
+
+        <table class="tbl">
+          <thead>
+            <tr><th>场景模式</th><th>快捷方式示例</th><th>适合做什么</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>💻 代码开发</strong></td>
+              <td>日常开发、网站开发、Agent 应用、Skill 开发</td>
+              <td>写代码、做工具、搭小程序</td>
+            </tr>
+            <tr>
+              <td><strong>📄 日常办公</strong></td>
+              <td>文档处理、数据分析可视化、深度研究、幻灯片</td>
+              <td>写报告、整数据、做 PPT——传媒岗位主力模式</td>
+            </tr>
+            <tr>
+              <td><strong>🎨 设计创意</strong></td>
+              <td>网站设计、移动端 App、PPT 设计、交互原型</td>
+              <td>做设计稿、做品牌物料</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="callout tip" style="margin-top:14px;">
+          <span class="callout-icon">💡</span>
+          <div>每个场景模式下方都有<strong>二级提示词模板</strong>，新手强烈建议先点模板再替换内容，而不是对着空对话框发呆。</div>
+        </div>
+      </div>
+
+      <div class="card" id="s3b">
+        <h3 style="font-size:16px;font-weight:700;color:var(--neutral-900);margin-bottom:6px;">⚙️ 三种工作模式（对话框左下角切换）</h3>
+        <p style="margin-bottom:14px; font-size:13.5px; color:var(--neutral-500);">这是 WorkBuddy 使用中<strong>最重要的概念</strong>，直接影响 Token 消耗和执行行为：</p>
+        <div class="mode-grid">
+          <div class="mode-card">
+            <div class="mc-name">Ask</div>
+            <div class="mc-sub">询问模式</div>
+            <p>纯聊天问答，<strong>不消耗 Agent 积分</strong>。只想提问、聊思路时切这里。</p>
+          </div>
+          <div class="mode-card">
+            <div class="mc-name">Plan</div>
+            <div class="mc-sub">计划模式</div>
+            <p>先给你看执行计划，AI 会提几个澄清问题，<strong>确认后再动手</strong>。复杂任务、新手上路推荐。</p>
+          </div>
+          <div class="mode-card highlight">
+            <div class="mc-name">Craft ⚡</div>
+            <div class="mc-sub">默认模式 · Agent 执行</div>
+            <p>直接执行任务，全程自动化。日常工作流提效主力，<strong>消耗 Token</strong>。</p>
+          </div>
+        </div>
+        <div class="callout warn" style="margin-top:14px;">
+          <span class="callout-icon">⚠️</span>
+          <div><strong>重要提醒</strong>：WorkBuddy <strong>默认是 Craft 模式</strong>，发消息就直接开始消耗积分。如果只是想问问题，<strong>务必先切换到 Ask 模式！</strong></div>
+        </div>
+      </div>
+
+      <div class="card" id="s3c">
+        <h3 style="font-size:16px;font-weight:700;color:var(--neutral-900);margin-bottom:14px;">📌 左侧功能区一览</h3>
+        <div class="g2">
+          <div>
+            <table class="tbl">
+              <thead><tr><th>功能入口</th><th>用来做什么</th></tr></thead>
+              <tbody>
+                <tr><td><strong>助理</strong></td><td>配置远程控制、设置助理基本信息</td></tr>
+                <tr><td><strong>项目</strong></td><td>管理工作空间（项目文件夹），查看历史任务</td></tr>
+                <tr><td><strong>专家</strong></td><td>选择垂直领域 AI 专家，切换到 Skill / Connector 标签</td></tr>
+                <tr><td><strong>自动化</strong></td><td>设置定时触发的自动化任务</td></tr>
+                <tr><td><strong>文件</strong></td><td>上传管理本地文件</td></tr>
+                <tr><td><strong>知识库文档</strong></td><td>连接 ima 知识库，让 AI 调用你的笔记内容</td></tr>
+                <tr><td><strong>灵感</strong></td><td>官方提示词灵感库，快速找使用案例</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div>
+            <div class="callout info">
+              <span class="callout-icon">📱</span>
+              <div><strong>ima 知识库打通</strong>：如果你是 ima 重度用户，WorkBuddy 已与 ima 知识库全面打通，AI 可直接调用你积累的笔记内容回答问题。</div>
+            </div>
+            <div class="callout tip" style="margin-top:10px;">
+              <span class="callout-icon">📎</span>
+              <div>对话框右侧的<strong>加号</strong>可上传文件，支持本地文件、腾讯文档、知识库多种来源。</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== S4 ===== -->
+    <div class="section" id="s4">
+      <div class="section-anchor"></div>
+      <div class="section-title"><span class="sec-num">5</span>建立工作空间（项目）</div>
+
+      <div class="card">
+        <p style="margin-bottom:14px;">工作空间 = 项目文件夹，用于管理和归类任务。好的分类习惯能让你日后快速找到成果。</p>
+
+        <div class="g2">
+          <div class="scene-card">
+            <h4>✅ 方式一：先绑定文件夹再开始</h4>
+            <div class="scene-step"><div class="ss-n">1</div><div>发送任务前，点击对话框下方的<strong>选择工作空间</strong></div></div>
+            <div class="scene-step"><div class="ss-n">2</div><div>选择电脑上已有的文件夹（或新建）</div></div>
+            <div class="scene-step"><div class="ss-n">3</div><div>开始任务，所有输出文件自动存入该文件夹</div></div>
+          </div>
+          <div class="scene-card">
+            <h4>📝 方式二：先做再整理</h4>
+            <div class="scene-step"><div class="ss-n">1</div><div>直接发任务，WorkBuddy 在默认目录生成结果</div></div>
+            <div class="scene-step"><div class="ss-n">2</div><div>任务完成后，手动将文件存入你的工作空间</div></div>
+            <div class="scene-step"><div class="ss-n">3</div><div>左侧「项目」中可查看所有历史任务记录</div></div>
+          </div>
+        </div>
+
+        <div class="callout warn" style="margin-top:14px;">
+          <span class="callout-icon">⚠️</span>
+          <div><strong>强烈建议</strong>：前期一定要做好分类，任务堆多了找起来非常麻烦！建议按项目或时间维度建文件夹。</div>
+        </div>
+
+        <div class="callout ok" style="margin-top:10px;">
+          <span class="callout-icon">🚀</span>
+          <div>工作空间绑定后，可同时开启多个 Agent 并行协作，所有产出文件自动同步到电脑本地对应文件夹。</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== S5 ===== -->
+    <div class="section" id="s5">
+      <div class="section-anchor"></div>
+      <div class="section-title"><span class="sec-num">6</span>如何输入提示词</div>
+
+      <div class="card">
+        <p style="margin-bottom:16px;">提示词的质量直接决定输出质量。WorkBuddy 提供了多种方式帮你降低提示词门槛：</p>
+
+        <div class="steps">
+          <div class="step">
+            <div class="step-num-col"><div class="step-circle">1</div></div>
+            <div class="step-body">
+              <h4>选好场景模式</h4>
+              <p>根据任务类型切换到「日常办公」「代码开发」「设计创意」，进入正确场景</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num-col"><div class="step-circle">2</div></div>
+            <div class="step-body">
+              <h4>点击快捷模板</h4>
+              <p>场景模式下方有二级快捷方式，点击对应模板（如「数据分析及可视化」），内容会自动填入对话框</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num-col"><div class="step-circle">3</div></div>
+            <div class="step-body">
+              <h4>用大白话描述你的需求</h4>
+              <p>把模板中的占位内容替换为你的实际需求。不需要用专业措辞，直接说就行：</p>
+              <div style="background:var(--neutral-50);border:1px solid var(--neutral-200);border-radius:8px;padding:12px 14px;margin-top:8px;font-size:13px;">
+                <div style="color:var(--neutral-500);margin-bottom:4px;">示例描述：</div>
+                <div style="color:var(--neutral-900);">「帮我把上周公众号各篇文章的阅读量、点赞数、转发数汇总成一张对比图，标出表现最好的三篇」</div>
+              </div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num-col"><div class="step-circle">4</div></div>
+            <div class="step-body">
+              <h4>点击「优化提示词」按钮</h4>
+              <p>这是 WorkBuddy 非常好用的一个功能——AI 会自动将你的大白话转化为结构化提示词，显著提升输出质量。<strong>强烈推荐每次都用</strong>。</p>
+              <div class="callout tip" style="margin-top:8px;">
+                <span class="callout-icon">💡</span>
+                <div>在 <strong>Plan 模式</strong>下，AI 会先回答几个澄清问题，帮助你进一步明确需求，再开始执行——不确定怎么描述时优先用 Plan 模式。</div>
+              </div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num-col"><div class="step-circle">5</div></div>
+            <div class="step-body">
+              <h4>发送，观察右侧 Todo 清单</h4>
+              <p>发送后可在右侧边栏实时查看 AI 的执行步骤进度，完成后可直接预览或打开文件夹查看成果</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <h3 style="font-size:15px;font-weight:700;margin-bottom:12px;color:var(--neutral-900);">📝 提示词写作小技巧</h3>
+        <div class="ba-grid">
+          <div class="ba-col before">
+            <span class="ba-label">❌ 效果一般的写法</span>
+            <ul>
+              <li>「帮我做个报告」</li>
+              <li>「分析一下这些数据」</li>
+              <li>「写篇文章」</li>
+              <li>「做个 PPT」</li>
+            </ul>
+          </div>
+          <div class="ba-col after">
+            <span class="ba-label">✅ 效果更好的写法</span>
+            <ul>
+              <li>「基于这份 Excel，生成本月内容部门周报，按栏目分组，高亮超过均值 20% 的指标」</li>
+              <li>「对比这五篇稿件的阅读量，找出标题格式规律，给出三个改进建议」</li>
+              <li>「以采访口吻写一篇 1000 字的媒体人 AI 转型报道，要有具体案例和引用」</li>
+            </ul>
+          </div>
+        </div>
+        <p style="font-size:13px;color:var(--neutral-500);margin-top:10px;">核心原则：<strong>说清楚输入是什么、输出格式是什么、有哪些具体要求</strong>，AI 的发挥空间越小，结果越符合预期。</p>
+      </div>
+    </div>
+
+    <!-- ===== S6 ===== -->
+    <div class="section" id="s6">
+      <div class="section-anchor"></div>
+      <div class="section-title"><span class="sec-num">7</span>模型选择指南</div>
+
+      <div class="card">
+        <p style="margin-bottom:14px;">WorkBuddy 内置了多款主流国产大模型，点击对话框上方的模型名称即可切换：</p>
+
+        <table class="tbl">
+          <thead><tr><th>模型</th><th>特点</th><th>适合场景</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>腾讯混元</td>
+              <td>腾讯自研，与腾讯生态无缝配合</td>
+              <td>腾讯文档、腾讯会议相关任务</td>
+            </tr>
+            <tr>
+              <td>DeepSeek V4 Pro</td>
+              <td>综合能力强、价格低，世界知识 + Coding + Agent 全面均衡</td>
+              <td>日常办公、内容创作、数据整理等通用任务</td>
+            </tr>
+            <tr>
+              <td>GLM（智谱）</td>
+              <td>多模态能力强，支持图文理解</td>
+              <td>需要处理图片、视觉内容的任务</td>
+            </tr>
+            <tr>
+              <td>Kimi</td>
+              <td>超长上下文处理，适合超长文档</td>
+              <td>需要处理几十万字长文档的任务</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="divider"></div>
+
+        <h4 style="font-size:14px;font-weight:700;margin-bottom:10px;color:var(--neutral-900);">🔑 接入自己的 API Key（节省积分）</h4>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num-col"><div class="step-circle" style="background:var(--accent);">1</div></div>
+            <div class="step-body">
+              <h4>进入设置 → 模型页面</h4>
+              <p>点击左下角头像 → 设置 → 切换到「模型」标签</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num-col"><div class="step-circle" style="background:var(--accent);">2</div></div>
+            <div class="step-body">
+              <h4>点击「添加模型」</h4>
+              <p>填入兼容 OpenAI 协议的 API Key（支持千问、其他第三方模型），使用自己的 API 额度，不消耗平台积分</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== S7 ===== -->
+    <div class="section" id="s7">
+      <div class="section-anchor"></div>
+      <div class="section-title"><span class="sec-num">8</span>专家与专家团</div>
+
+      <div class="card">
+        <h3 style="font-size:15px;font-weight:700;margin-bottom:12px;color:var(--neutral-900);">🧑‍💼 单个专家：垂直领域的专业 AI 员工</h3>
+        <p style="margin-bottom:12px;">WorkBuddy 内置 <strong>100+ 专业领域 AI 专家</strong>，每个专家已封装好对应领域的知识、技能和行为规范。</p>
+
+        <div class="g3" style="margin-bottom:16px;">
+          <div class="feat-card">
+            <span class="feat-icon">📱</span>
+            <h4>微信小程序专家</h4>
+            <p>擅长 WXML、小程序开发</p>
+          </div>
+          <div class="feat-card">
+            <span class="feat-icon">📰</span>
+            <h4>资讯速递专家</h4>
+            <p>每日 AI 动态整理成中文简报</p>
+          </div>
+          <div class="feat-card">
+            <span class="feat-icon">✍️</span>
+            <h4>内容创作专家</h4>
+            <p>标题优化、稿件改写、采访提纲等</p>
+          </div>
+        </div>
+
+        <p style="font-size:13.5px;margin-bottom:6px;"><strong>使用方式</strong>：左侧「专家」→ 按分类找到对应专家 → 直接在对话中说需求</p>
+        <p style="font-size:13.5px;"><strong>创建自定义专家</strong>：点击右上角「我的专家」→「创建专家」→ 用大白话描述你想做什么方向的专家。封装好自己的方法论，反复调用或分享给团队。</p>
+
+        <div class="divider"></div>
+
+        <h3 style="font-size:15px;font-weight:700;margin-bottom:12px;color:var(--neutral-900);">👥 专家团：多 Agent 协作处理复杂任务</h3>
+        <p style="margin-bottom:12px;">多个专家并行协作，团长自动拆解任务、分配、整合成果。</p>
+
+        <div class="callout info" style="margin-bottom:12px;">
+          <span class="callout-icon">💡</span>
+          <div><strong>示例</strong>：软件开发团队 = 交付总监 + 产品经理 + 架构师 + 工程师 + QA 工程师，五个 Agent 分工协作，完成从需求到代码的全链路。</div>
+        </div>
+
+        <div class="callout warn">
+          <span class="callout-icon">⚠️</span>
+          <div><strong>积分消耗约为单个专家的 3~5 倍</strong>。只在真正需要多角色协作时使用，简单任务请用单个专家或直接对话。</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== S8 ===== -->
+    <div class="section" id="s8">
+      <div class="section-anchor"></div>
+      <div class="section-title"><span class="sec-num">9</span>搭建技能（Skill）</div>
+
+      <div class="card">
+        <h3 style="font-size:15px;font-weight:700;margin-bottom:12px;color:var(--neutral-900);">📚 三个核心概念区分</h3>
+        <table class="tbl" style="margin-bottom:18px;">
+          <thead><tr><th>类型</th><th>是什么</th><th>类比</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>专家（Expert）</strong></td>
+              <td>封装好专业知识和行为规范的垂直 Agent</td>
+              <td>一个专业员工</td>
+            </tr>
+            <tr>
+              <td><strong>技能（Skill）</strong></td>
+              <td>可复用的功能模块，可以安装调用</td>
+              <td>插件 / 工具</td>
+            </tr>
+            <tr>
+              <td><strong>连接器（Connector/MCP）</strong></td>
+              <td>与外部服务打通，让 AI 读写外部数据</td>
+              <td>系统集成 / API</td>
+            </tr>
+            <tr>
+              <td><strong>套件</strong></td>
+              <td>一组相关技能的打包合集</td>
+              <td>插件包</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3 style="font-size:15px;font-weight:700;margin-bottom:12px;color:var(--neutral-900);">🔍 使用现有技能</h3>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num-col"><div class="step-circle" style="width:28px;height:28px;font-size:12px;">1</div></div>
+            <div class="step-body">
+              <h4>点击左上角「专家」→ 切换到「技能」标签</h4>
+              <p>可以看到「推荐」（官方精选）和 <strong>Skillhub</strong>（社区制作）两个分区</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num-col"><div class="step-circle" style="width:28px;height:28px;font-size:12px;">2</div></div>
+            <div class="step-body">
+              <h4>搜索你需要的技能</h4>
+              <p>Skillhub 覆盖范围非常全面，先搜再造，避免重复造轮子</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num-col"><div class="step-circle" style="width:28px;height:28px;font-size:12px;">3</div></div>
+            <div class="step-body">
+              <h4>安装后有两种方式调用</h4>
+              <p><strong>显式指定</strong>：在对话框发送 <code>/技能名称</code> 即可直接激活该技能</p>
+              <p style="margin-top:6px;"><strong>按需触发</strong>：直接描述任务，AI 智能体从可用列表中自主识别并调用最匹配的技能，无需手动指定</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <h3 style="font-size:15px;font-weight:700;margin-bottom:12px;color:var(--neutral-900);">🛠️ 创建自定义技能</h3>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num-col"><div class="step-circle" style="background:var(--accent);width:28px;height:28px;font-size:12px;">1</div></div>
+            <div class="step-body">
+              <h4>点击右上角「添加技能」→「创建技能」</h4>
+              <p>进入技能创建界面</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num-col"><div class="step-circle" style="background:var(--accent);width:28px;height:28px;font-size:12px;">2</div></div>
+            <div class="step-body">
+              <h4>用大白话描述你想实现的功能</h4>
+              <p>例如：「每天早上自动汇总昨日公众号数据，生成简报发到我的 QQ 邮箱」</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num-col"><div class="step-circle" style="background:var(--accent);width:28px;height:28px;font-size:12px;">3</div></div>
+            <div class="step-body">
+              <h4>WorkBuddy 自动生成技能配置</h4>
+              <p>AI 会自动将描述转化为技能结构。搭建完成后即可反复调用，也可分享给团队其他成员。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout ok" style="margin-top:14px;">
+          <span class="callout-icon">🎯</span>
+          <div><strong>核心价值</strong>：把你工作中「每天都要做、高度重复」的流程封装成一个 Skill，下次一键调用，不用再重新写一遍提示词。</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== S9 ===== -->
+    <div class="section" id="s9">
+      <div class="section-anchor"></div>
+      <div class="section-title"><span class="sec-num">10</span>连接器（Connector/MCP）打通</div>
+
+      <div class="card">
+        <p style="margin-bottom:14px;">连接器让 WorkBuddy 能读写你已有的工具数据，实现真正的跨应用自动化——不需要手动复制粘贴。</p>
+
+        <!-- 腾讯系优势 -->
+        <div class="callout ok" style="margin-bottom:16px;">
+          <span class="callout-icon">🏆</span>
+          <div>
+            <strong>腾讯系产品原生深度集成</strong>：WorkBuddy 由腾讯出品，与腾讯系产品之间是<strong>原生深度打通</strong>，不是简单的 API 调用。QQ 邮箱、腾讯文档、腾讯会议、企业微信、乐享知识库之间可以无缝联动，权限授权更顺畅、数据读写更稳定、联动场景开箱即用——这是其他 AI 工具难以复制的天然优势。
+          </div>
+        </div>
+
+        <!-- 腾讯系 vs 第三方 分栏 -->
+        <style>
+          .conn-card { background:#fff; border-radius:8px; padding:10px 10px 8px; text-align:center; }
+          .conn-card .ci { font-size:20px; display:block; margin-bottom:4px; }
+          .conn-card .cn { font-size:11px; font-weight:600; color:#0F1A2E; margin-bottom:4px; display:block; }
+          .conn-card .ck { font-size:9.5px; color:#6B7280; line-height:1.5; }
+          .conn-grid2 { display:grid; grid-template-columns:1fr 1fr; gap:6px; }
+        </style>
+        <div class="g2" style="margin-bottom:16px; align-items:start;">
+          <div style="background:var(--brand-light); border-radius:var(--r-md); padding:14px;">
+            <div style="font-size:12px; font-weight:700; color:var(--brand-dark); margin-bottom:10px; letter-spacing:.3px;">🔵 腾讯系生态（深度集成）</div>
+            <div class="conn-grid2">
+              <div class="conn-card">
+                <span class="ci">📧</span>
+                <span class="cn">QQ 邮箱</span>
+                <span class="ck">收发邮件 · 搜索 · 定时发送</span>
+              </div>
+              <div class="conn-card">
+                <span class="ci">📄</span>
+                <span class="cn">腾讯文档</span>
+                <span class="ck">文档/表格读写 · 新建文档</span>
+              </div>
+              <div class="conn-card">
+                <span class="ci">📅</span>
+                <span class="cn">腾讯会议</span>
+                <span class="ck">发起会议 · 查看日程 · 管理参会人员</span>
+              </div>
+              <div class="conn-card">
+                <span class="ci">💼</span>
+                <span class="cn">企业微信</span>
+                <span class="ck">发消息 · 管理日程 · 成员查询</span>
+              </div>
+              <div class="conn-card">
+                <span class="ci">📚</span>
+                <span class="cn">乐享知识库</span>
+                <span class="ck">搜索 · 读取 · 写入文档</span>
+              </div>
+              <div class="conn-card">
+                <span class="ci">📋</span>
+                <span class="cn">腾讯问卷</span>
+                <span class="ck">生成问卷 · 答卷结果读取</span>
+              </div>
+              <div class="conn-card">
+                <span class="ci">🎧</span>
+                <span class="cn">腾讯企点客服</span>
+                <span class="ck">对话记录查询 · 处理工单</span>
+              </div>
+              <div class="conn-card">
+                <span class="ci">☁️</span>
+                <span class="cn">腾讯云 CloudBase</span>
+                <span class="ck">开发 · 部署 · 调试与排障</span>
+              </div>
+            </div>
+            <div style="text-align:center; font-size:12px; color:var(--brand); margin-top:8px; font-weight:500;">……还有更多</div>
+          </div>
+          <div style="background:var(--neutral-50); border:1px solid var(--neutral-200); border-radius:var(--r-md); padding:14px;">
+            <div style="font-size:12px; font-weight:700; color:var(--neutral-500); margin-bottom:10px; letter-spacing:.3px;">⚙️ 第三方工具（标准 MCP）</div>
+            <div class="conn-grid2">
+              <div class="conn-card" style="background:var(--neutral-100);">
+                <span class="ci">🐦</span>
+                <span class="cn">飞书</span>
+                <span class="ck">管理飞书/Lark 全产品能力</span>
+              </div>
+              <div class="conn-card" style="background:var(--neutral-100);">
+                <span class="ci">🔔</span>
+                <span class="cn">钉钉</span>
+                <span class="ck">管理钉钉全产品能力</span>
+              </div>
+              <div class="conn-card" style="background:var(--neutral-100);">
+                <span class="ci">🎓</span>
+                <span class="cn">小鹅通</span>
+                <span class="ck">课程查询与创建 · 内容素材上传</span>
+              </div>
+              <div class="conn-card" style="background:var(--neutral-100);">
+                <span class="ci">📊</span>
+                <span class="cn">金山文档</span>
+                <span class="ck">表格/文档读写 · 新建文档</span>
+              </div>
+              <div class="conn-card" style="background:var(--neutral-100);">
+                <span class="ci">💰</span>
+                <span class="cn">销售易 CRM</span>
+                <span class="ck">客户与商机查询 · 跟进记录读写</span>
+              </div>
+              <div class="conn-card" style="background:var(--neutral-100);">
+                <span class="ci">🔍</span>
+                <span class="cn">企查查</span>
+                <span class="ck">企业工商信息查询</span>
+              </div>
+              <div class="conn-card" style="background:var(--neutral-100);">
+                <span class="ci">📝</span>
+                <span class="cn">Notion</span>
+                <span class="ck">页面读写 · 数据库查询</span>
+              </div>
+              <div class="conn-card" style="background:var(--neutral-100);">
+                <span class="ci">🐙</span>
+                <span class="cn">GitHub</span>
+                <span class="ck">克隆/推送代码 · 查看/管理仓库</span>
+              </div>
+              <div class="conn-card" style="background:var(--neutral-100);">
+                <span class="ci">☁️</span>
+                <span class="cn">百度网盘</span>
+                <span class="ck">文件浏览 · 搜索 · 下载 · 分享</span>
+              </div>
+              <div class="conn-card" style="background:var(--neutral-100);">
+                <span class="ci">🔌</span>
+                <span class="cn">自定义 MCP</span>
+                <span class="ck">任意工具接入 · 企业私有</span>
+              </div>
+            </div>
+            <div style="text-align:center; font-size:12px; color:var(--neutral-500); margin-top:8px; font-weight:500;">……还有更多</div>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <h3 style="font-size:15px;font-weight:700;margin-bottom:12px;color:var(--neutral-900);">📧 以 QQ 邮箱为例：授权配置</h3>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num-col"><div class="step-circle" style="width:28px;height:28px;font-size:12px;">1</div></div>
+            <div class="step-body">
+              <h4>进入「专家」→「连接器」标签</h4>
+              <p>找到 QQ 邮箱 MCP 并点击</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num-col"><div class="step-circle" style="width:28px;height:28px;font-size:12px;">2</div></div>
+            <div class="step-body">
+              <h4>扫码授权</h4>
+              <p>用手机扫码，在手机端确认授权</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num-col"><div class="step-circle" style="width:28px;height:28px;font-size:12px;">3</div></div>
+            <div class="step-body">
+              <h4>授权完成，即可在对话中调用</h4>
+              <p>例如：「把今天的会议纪要发邮件给 XX」——AI 会直接调用 QQ 邮箱发送，不需要你手动操作</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <h3 style="font-size:15px;font-weight:700;margin-bottom:14px;color:var(--neutral-900);">🔗 腾讯系联动场景举例</h3>
+        <div style="display:flex; flex-direction:column; gap:10px;">
+          <div style="background:var(--neutral-50); border-radius:var(--r-sm); padding:12px 14px; font-size:13px;">
+            <div style="font-weight:700; color:var(--neutral-900); margin-bottom:4px;">📋 会议 → 纪要 → 文档 → 邮件</div>
+            <div style="color:var(--neutral-500); line-height:1.6;">从腾讯会议获取录制记录，让 WorkBuddy 整理成会议纪要，写入腾讯文档，再由 QQ 邮箱发送给所有参会者——全程一句话触发</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== S10 ===== -->
+    <div class="section" id="s10">
+      <div class="section-anchor"></div>
+      <div class="section-title"><span class="sec-num">11</span>节省 Token（积分）的方法</div>
+
+      <div class="card">
+        <div class="token-tip">
+          <div class="tt-num">1</div>
+          <div class="tt-body">
+            <h5>只问问题时切到 Ask 模式</h5>
+            <p>Ask 模式<strong>不消耗 Agent 积分</strong>，仅用于聊天问答。只有真正需要执行任务时才用 Craft 模式。每次打开 WorkBuddy 先确认当前模式，避免误发消息触发任务。</p>
+          </div>
+        </div>
+        <div class="token-tip">
+          <div class="tt-num">2</div>
+          <div class="tt-body">
+            <h5>复杂任务先用 Plan 模式预览</h5>
+            <p>Plan 模式先给你看执行计划，你确认没问题再动手。避免因为提示词不清楚导致 AI 跑错方向、浪费大量积分。</p>
+          </div>
+        </div>
+        <div class="token-tip">
+          <div class="tt-num">3</div>
+          <div class="tt-body">
+            <h5>根据任务复杂度选模型</h5>
+            <p>不同模型消耗积分不同。简单的写作、整理任务不必用最贵的模型；复杂推理任务再考虑切换高性能模型。根据任务类型选择对应擅长的模型，避免不必要的积分消耗。</p>
+          </div>
+        </div>
+        <div class="token-tip">
+          <div class="tt-num">4</div>
+          <div class="tt-body">
+            <h5>简单任务不要用专家团</h5>
+            <p>专家团积分消耗是单专家的 <strong>3~5 倍</strong>，只在真正需要多角色协作（如完整软件项目、复杂报告）时使用。写篇文章、整理数据直接用单个专家或直接对话即可。</p>
+          </div>
+        </div>
+        <div class="token-tip">
+          <div class="tt-num">5</div>
+          <div class="tt-body">
+            <h5>提示词写清楚，一步到位</h5>
+            <p>含糊的提示词会导致 AI 输出偏差，追加修正会反复消耗积分。一次把输入内容、输出格式、具体要求说清楚，减少来回迭代次数。</p>
+          </div>
+        </div>
+        <div class="token-tip">
+          <div class="tt-num">6</div>
+          <div class="tt-body">
+            <h5>任务完成后及时中断，不要继续追问</h5>
+            <p>AI 完成任务输出结果后，如果你发现基本满意只需要微调，优先自己手动改，而不是让 AI 重新跑一遍。每次追加对话都会消耗积分，短链路的微调成本远低于重新执行。</p>
+          </div>
+        </div>
+        <div class="token-tip">
+          <div class="tt-num">7</div>
+          <div class="tt-body">
+            <h5>善用 Skill 封装重复工作流</h5>
+            <p>把你经常重复执行的任务封装成 Skill，下次直接调用已有 Skill 而不是重新描述一遍需求。Skill 执行路径更短、上下文更精准，积分消耗比每次从零开始更低。</p>
+          </div>
+        </div>
+        <div class="token-tip">
+          <div class="tt-num">8</div>
+          <div class="tt-body">
+            <h5>控制上下文长度</h5>
+            <p>上传或粘贴给 AI 的内容越长，消耗的 Token 越多。处理长文档时，优先提取关键段落再喂给 AI，而不是把整份文件全部丢进去。知识库引用同理，精准召回比全量导入更省。</p>
+          </div>
+        </div>
+        <div class="token-tip">
+          <div class="tt-num">9</div>
+          <div class="tt-body">
+            <h5>接入自己的 API Key</h5>
+            <p>在设置 → 模型页面添加第三方模型（如千问等），使用自己的 API 额度，<strong>完全不消耗平台积分</strong>。适合使用量大的重度用户。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== S11 ===== -->
+    <div class="section" id="s11">
+      <div class="section-anchor"></div>
+      <div class="section-title"><span class="sec-num">12</span>重要设置清单（强烈建议配置）</div>
+
+      <div class="card">
+        <p style="margin-bottom:16px;">点击左下角头像进入<strong>设置页面</strong>，以下配置强烈建议开启：</p>
+
+        <div class="g2">
+          <div>
+            <h4 style="font-size:14px;font-weight:700;margin-bottom:10px;color:var(--neutral-900);">⚙️ 系统设置</h4>
+            <ul class="checklist">
+              <li><strong>技能自动更新</strong>：已安装的 Skill 有新版本自动升级，保持最新</li>
+              <li><strong>锁屏远程</strong>：防止电脑休眠导致任务中断，等同于保活机制</li>
+              <li><strong>全部系统权限</strong>：在「系统授权」中将所有权限开启，才能使用完整功能</li>
+            </ul>
+          </div>
+          <div>
+            <h4 style="font-size:14px;font-weight:700;margin-bottom:10px;color:var(--neutral-900);">🧠 对话记忆</h4>
+            <ul class="checklist">
+              <li><strong>开启对话记忆</strong>：AI 从对话中提取关键信息，越用越了解你</li>
+              <li><strong>支持从其他 Agent 导入记忆</strong>，换工具时不用重新「自我介绍」</li>
+            </ul>
+            <h4 style="font-size:14px;font-weight:700;margin:14px 0 10px;color:var(--neutral-900);">🔐 访问权限</h4>
+            <ul class="checklist">
+              <li><strong>默认权限</strong>：遇到高风险操作会暂停询问</li>
+              <li><strong>完全访问权限</strong>：全程自动执行不打断（高级用户可选）</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <h4 style="font-size:14px;font-weight:700;margin-bottom:8px;color:var(--neutral-900);">📝 自定义指令（最重要！）</h4>
+        <p style="font-size:13.5px;margin-bottom:8px;">在<strong>个性化设置</strong>中配置，相当于给 AI 设定的「最高级规则」，全局生效，每次对话都会遵守。</p>
+        <div class="callout tip">
+          <span class="callout-icon">💡</span>
+          <div>可以在这里写：你的工作身份背景、偏好的输出格式、语气要求、需要注意的行业规范等。一次设置，永久生效，无需每次重复交代。</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== S12 ===== -->
+    <div class="section" id="s12">
+      <div class="section-anchor"></div>
+      <div class="section-title"><span class="sec-num">13</span>手机远程控制</div>
+
+      <div class="card">
+        <p style="margin-bottom:14px;">用手机微信小程序向电脑上的 WorkBuddy 发指令，电脑在后台自动执行任务——出门在外也能远程调度。</p>
+
+        <h3 style="font-size:15px;font-weight:700;margin-bottom:12px;color:var(--neutral-900);">📲 配置步骤</h3>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num-col"><div class="step-circle" style="width:28px;height:28px;font-size:12px;">1</div></div>
+            <div class="step-body">
+              <h4>开启远程控制开关</h4>
+              <p>点击左上角「助理」→「设置」→ 开启远程控制相关开关</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num-col"><div class="step-circle" style="width:28px;height:28px;font-size:12px;">2</div></div>
+            <div class="step-body">
+              <h4>手机扫码，打开小程序授权</h4>
+              <p>用手机微信扫码，在小程序内完成授权登录</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num-col"><div class="step-circle" style="width:28px;height:28px;font-size:12px;">3</div></div>
+            <div class="step-body">
+              <h4>左上角显示「已连接」即成功</h4>
+              <p>此后在微信小程序中发消息，电脑上的 WorkBuddy 就会接收并执行</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <h3 style="font-size:15px;font-weight:700;margin-bottom:12px;color:var(--neutral-900);">🌐 两种远程模式</h3>
+        <div class="g2">
+          <div class="scene-card">
+            <h4>☁️ 云端工作模式</h4>
+            <p style="font-size:13px;margin-top:6px;color:var(--neutral-500);">任务在云端沙箱运行，<strong>不需要电脑开着</strong>。适合不依赖本地文件的任务，如搜索、写作、数据分析等。</p>
+          </div>
+          <div class="scene-card">
+            <h4>🖥️ 连接电脑模式</h4>
+            <p style="font-size:13px;margin-top:6px;color:var(--neutral-500);">远程操控本地电脑，<strong>电脑需要开着</strong>。适合需要读取电脑本地文件的任务。</p>
+          </div>
+        </div>
+
+        <div class="callout ok" style="margin-top:14px;">
+          <span class="callout-icon">💡</span>
+          <div><strong>实战场景</strong>：在外开会，突然需要把电脑里一份文件发邮件给客户——掏出手机在小程序里说「把桌面上的 XXX 报告发邮件给 XXX」，WorkBuddy 自动搞定（需提前配置好 QQ 邮箱连接器）。</div>
+        </div>
+
+        <div class="callout info" style="margin-top:10px;">
+          <span class="callout-icon">📌</span>
+          <div><strong>其他接入方式</strong>：除微信小程序外，WorkBuddy 助理也可接入飞书、钉钉、QQ 等平台。</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== S13 ===== -->
+    <div class="section" id="s13">
+      <div class="section-anchor"></div>
+      <div class="section-title"><span class="sec-num">14</span>实战演示案例</div>
+
+      <div class="card">
+        <h3 style="font-size:15px;font-weight:700;margin-bottom:14px;color:var(--neutral-900);">🧾 案例一：自动识别发票信息（财务办公任务）</h3>
+        <div class="steps">
+
+          <div class="step">
+            <div class="step-num-col"><div class="step-circle" style="width:28px;height:28px;font-size:12px;">1</div></div>
+            <div class="step-body">
+              <h4>切换到「日常办公」模式，选择工作空间</h4>
+              <img src="assets/财务办公1.png" style="width:100%;border-radius:8px;margin-top:10px;border:1px solid var(--neutral-200);" />
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-num-col"><div class="step-circle" style="width:28px;height:28px;font-size:12px;">2</div></div>
+            <div class="step-body">
+              <h4>上传发票文件，并写清任务提示词</h4>
+              <p style="margin-top:4px;">也可直接在对话框输入文件所在位置，让 AI 自行查找读取</p>
+              <img src="assets/财务办公2.png" style="width:100%;border-radius:8px;margin-top:10px;border:1px solid var(--neutral-200);" />
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-num-col"><div class="step-circle" style="width:28px;height:28px;font-size:12px;">3</div></div>
+            <div class="step-body">
+              <h4>点击「优化提示词」，让 AI 自动结构化描述，确认后执行</h4>
+              <img src="assets/财务办公4.png" style="width:100%;border-radius:8px;margin-top:10px;border:1px solid var(--neutral-200);" />
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-num-col"><div class="step-circle" style="width:28px;height:28px;font-size:12px;">4</div></div>
+            <div class="step-body">
+              <h4>输出结果：发票信息提取、销售方工商信息、合规性判断结论</h4>
+              <img src="assets/财务办公6.png" style="width:100%;border-radius:8px;margin-top:10px;border:1px solid var(--neutral-200);" />
+              <img src="assets/财务办公7.png" style="width:100%;border-radius:8px;margin-top:8px;border:1px solid var(--neutral-200);" />
+              <img src="assets/财务办公8.png" style="width:100%;border-radius:8px;margin-top:8px;border:1px solid var(--neutral-200);" />
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-num-col"><div class="step-circle" style="width:28px;height:28px;font-size:12px;">5</div></div>
+            <div class="step-body">
+              <h4>右侧直接预览 Excel 产物——含发票信息提取表、销售方工商信息、合规性比对分析</h4>
+              <img src="assets/财务办公9.png" style="width:100%;border-radius:8px;margin-top:10px;border:1px solid var(--neutral-200);" />
+              <img src="assets/财务办公10.png" style="width:100%;border-radius:8px;margin-top:8px;border:1px solid var(--neutral-200);" />
+              <img src="assets/财务办公11.png" style="width:100%;border-radius:8px;margin-top:8px;border:1px solid var(--neutral-200);" />
+            </div>
+          </div>
+
+        </div>
+
+        <div class="divider"></div>
+
+        <h3 style="font-size:15px;font-weight:700;margin-bottom:14px;color:var(--neutral-900);">🌐 案例二：做一个宣传网页（代码任务）</h3>
+        <div class="steps">
+
+          <div class="step">
+            <div class="step-num-col"><div class="step-circle" style="background:var(--accent);width:28px;height:28px;font-size:12px;">1</div></div>
+            <div class="step-body">
+              <h4>切换到「代码开发」，并选择 Plan 模式</h4>
+              <img src="assets/641.png" style="width:100%;border-radius:8px;margin-top:10px;border:1px solid var(--neutral-200);" />
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-num-col"><div class="step-circle" style="background:var(--accent);width:28px;height:28px;font-size:12px;">2</div></div>
+            <div class="step-body">
+              <h4>点击「网站开发」快捷模板</h4>
+              <img src="assets/642.webp" style="width:100%;border-radius:8px;margin-top:10px;border:1px solid var(--neutral-200);" />
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-num-col"><div class="step-circle" style="background:var(--accent);width:28px;height:28px;font-size:12px;">3</div></div>
+            <div class="step-body">
+              <h4>输入提示词，描述你的需求</h4>
+              <img src="assets/643.webp" style="width:100%;border-radius:8px;margin-top:10px;border:1px solid var(--neutral-200);" />
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-num-col"><div class="step-circle" style="background:var(--accent);width:28px;height:28px;font-size:12px;">4</div></div>
+            <div class="step-body">
+              <h4>点击「优化提示词」，让 AI 自动结构化描述</h4>
+              <img src="assets/644.webp" style="width:100%;border-radius:8px;margin-top:10px;border:1px solid var(--neutral-200);" />
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-num-col"><div class="step-circle" style="background:var(--accent);width:28px;height:28px;font-size:12px;">5</div></div>
+            <div class="step-body">
+              <h4>回答 AI 的澄清问题，确认计划后执行</h4>
+              <img src="assets/645.webp" style="width:100%;border-radius:8px;margin-top:10px;border:1px solid var(--neutral-200);" />
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-num-col"><div class="step-circle" style="background:var(--accent);width:28px;height:28px;font-size:12px;">6</div></div>
+            <div class="step-body">
+              <h4>右侧直接预览网页效果</h4>
+              <img src="assets/646.webp" style="width:100%;border-radius:8px;margin-top:10px;border:1px solid var(--neutral-200);" />
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-num-col"><div class="step-circle" style="background:var(--accent);width:28px;height:28px;font-size:12px;">7</div></div>
+            <div class="step-body">
+              <h4>可追加调用「前端开发 Skill」继续优化视觉</h4>
+              <img src="assets/647.webp" style="width:100%;border-radius:8px;margin-top:10px;border:1px solid var(--neutral-200);" />
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-num-col"><div class="step-circle" style="background:var(--accent);width:28px;height:28px;font-size:12px;">8</div></div>
+            <div class="step-body">
+              <h4>优化后的最终效果</h4>
+              <img src="assets/648.webp" style="width:100%;border-radius:8px;margin-top:10px;border:1px solid var(--neutral-200);" />
+            </div>
+          </div>
+
+        </div>
+
+        <div class="divider"></div>
+
+        <h3 style="font-size:15px;font-weight:700;margin-bottom:14px;color:var(--neutral-900);">⏰ 案例三：设置自动化定时任务</h3>
+        <div class="steps">
+
+          <div class="step">
+            <div class="step-num-col"><div class="step-circle" style="width:28px;height:28px;font-size:12px;">1</div></div>
+            <div class="step-body">
+              <h4>点击左侧「自动化」</h4>
+              <p style="margin-top:4px;">可以看到官方提供的现成模板，覆盖每日新闻推送、工作周报、提醒通知等常见场景</p>
+              <img src="assets/自动化1.png" style="width:100%;border-radius:8px;margin-top:10px;border:1px solid var(--neutral-200);" />
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-num-col"><div class="step-circle" style="width:28px;height:28px;font-size:12px;">2</div></div>
+            <div class="step-body">
+              <h4>从模板入手，或添加自定义任务</h4>
+              <p style="margin-top:4px;margin-bottom:10px;"><strong>方式一：从模板入手</strong> —— 选择合适的模板，修改提示词和触发时间，点击「添加」即可启用</p>
+              <img src="assets/自动化2.png" style="width:60%;border-radius:8px;border:1px solid var(--neutral-200);" />
+              <p style="margin-top:14px;margin-bottom:10px;"><strong>方式二：自定义任务</strong> —— 点击右上角「+ 添加」，填写任务名称、提示词（可引用 Skill）、执行频率与时间</p>
+              <img src="assets/自动化3.png" style="width:60%;border-radius:8px;border:1px solid var(--neutral-200);" />
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-num-col"><div class="step-circle" style="width:28px;height:28px;font-size:12px;">3</div></div>
+            <div class="step-body">
+              <h4>点击「添加」保存并启用</h4>
+              <p style="margin-top:4px;">任务会在你设定的时间自动触发执行，结果可推送到 WorkBuddy 微信小程序——早上起来打开手机就能看到</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="print-note">本材料由腾讯云文化传媒行业线 × WorkBuddy 共同制作 · v2.0 · 2026年6月</div>
+
+  </main>
+</div><!-- /layout -->
+
+<script>
+  // 滚动高亮目录
+  const sections = document.querySelectorAll('[id^="s"]');
+  const tocLinks = document.querySelectorAll('.toc a');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        tocLinks.forEach(l => l.classList.remove('active'));
+        const id = e.target.id;
+        const active = document.querySelector(`.toc a[href="#${id}"]`);
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+  sections.forEach(s => observer.observe(s));
+</script>
+
+</body>
+</html>
