@@ -366,8 +366,7 @@
   function renderHero() {
     const chips = [
       `${data.meta.totalSkills || 0} 个 Skill`,
-      `${(data.meta.categories || []).length} 类场景`,
-      `${(data.meta.packages || []).length} 个 Skill 包`
+      `${(data.meta.categories || []).length} 类场景`
     ];
     chips.forEach((item) => heroChips.appendChild(makeChip(item)));
   }
@@ -383,13 +382,9 @@
   }
 
   function renderOverview() {
-    const businessCount = data.items.filter((item) => item.category === "业务创作类").length;
-    const officeCount = data.items.filter((item) => item.category === "通用办公类").length;
     overview.innerHTML = [
       metric("Skill 总数", data.meta.totalSkills || 0, "来自当前底表"),
-      metric("场景标签", (data.meta.categories || []).length, "支持筛选切换"),
-      metric("业务创作类", businessCount, "面向内容与视频生产"),
-      metric("通用办公类", officeCount, "面向通用协同与管理")
+      metric("场景标签", (data.meta.categories || []).length, "支持筛选切换")
     ].join("");
   }
 
@@ -417,10 +412,74 @@
     return `<span class="tag ${tone}">${text}</span>`;
   }
 
+  function inferRoleTags(item) {
+    const text = `${item.name || ""} ${item.summary || ""}`.toLowerCase();
+    const tags = [];
+
+    function add(tag) {
+      if (!tags.includes(tag)) {
+        tags.push(tag);
+      }
+    }
+
+    if (item.category === "项目管理") {
+      add("项目经理");
+      add("运营经理");
+    }
+
+    if (item.category === "内容创作") {
+      add("编辑");
+      add("新媒体运营");
+    }
+
+    if (item.category === "内容审核") {
+      add("审核专员");
+      add("编辑");
+    }
+
+    if (item.category === "视频制作") {
+      add("编导");
+      add("剪辑师");
+    }
+
+    if (text.includes("公众号") || text.includes("文案") || text.includes("新闻") || text.includes("科普")) {
+      add("内容编辑");
+    }
+    if (text.includes("排版") || text.includes("indesign")) {
+      add("排版编辑");
+    }
+    if (text.includes("读者来信") || text.includes("社交评论") || text.includes("回复")) {
+      add("社群运营");
+    }
+    if (text.includes("截稿") || text.includes("进展追踪") || text.includes("规划")) {
+      add("项目管理");
+    }
+    if (text.includes("审核") || text.includes("审校") || text.includes("错别字") || text.includes("事实核查")) {
+      add("内容审核");
+    }
+    if (text.includes("字幕") || text.includes("短视频") || text.includes("烧录")) {
+      add("视频后期");
+    }
+    if (text.includes("漫剧") || text.includes("分镜") || text.includes("剧本")) {
+      add("编剧");
+    }
+    if (text.includes("选题") || text.includes("调研")) {
+      add("选题策划");
+    }
+    if (text.includes("ppt") || text.includes("演讲")) {
+      add("培训经理");
+    }
+
+    return tags.slice(0, 3);
+  }
+
   function renderCard(item) {
     const button = item.downloadUrl
       ? `<a class="btn" href="${item.downloadUrl}" target="_blank" rel="noopener noreferrer">查看 / 下载</a>`
       : `<span class="btn disabled">链接待补充</span>`;
+    const roleTags = inferRoleTags(item)
+      .map((tag) => priorityTag(tag, "tag-green"))
+      .join("");
 
     return `
       <article class="card">
@@ -429,6 +488,7 @@
             <h3 class="card-title">${item.name}</h3>
             <div class="tag-row">
               ${priorityTag(item.category, "tag-blue")}
+              ${roleTags}
             </div>
           </div>
         </div>
