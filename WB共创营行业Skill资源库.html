@@ -356,7 +356,7 @@
       <div class="toolbar-top">
         <div>
           <h2>按场景标签筛选</h2>
-          <p>当前先按表格中的“类型”字段筛选，后续补充下载链接后会自动显示查看按钮。</p>
+          <p>当前按表格中的 Skill 类型筛选，卡片会直接展示教程或下载入口，后续更新 Excel 后可同步刷新页面。</p>
         </div>
         <div class="toolbar-meta" id="toolbar-meta"></div>
       </div>
@@ -455,21 +455,22 @@
             <h3 class="card-title">${item.name}</h3>
             <div class="tag-row">
               ${priorityTag(item.category, "tag-blue")}
-              ${priorityTag(item.package, "tag-green")}
-              ${priorityTag(`主流媒体 ${item.mainstreamPriority}`, "tag-orange")}
-              ${priorityTag(`新兴媒体 ${item.emergingPriority}`, "tag-blue")}
+              ${item.package ? priorityTag(item.package, "tag-green") : ""}
+              ${item.mainstreamPriority ? priorityTag(`主流媒体 ${item.mainstreamPriority}`, "tag-orange") : ""}
+              ${item.emergingPriority ? priorityTag(`新兴媒体 ${item.emergingPriority}`, "tag-blue") : ""}
+              ${item.linkKind ? priorityTag(item.linkKind, "tag-green") : ""}
             </div>
           </div>
         </div>
         <p class="summary">${item.summary}</p>
         <div class="meta-grid">
           <div class="meta-item">
-            <span>适用岗位</span>
-            <strong>${item.roles || "待补充"}</strong>
+            <span>${item.roles ? "适用岗位" : "查看内容"}</span>
+            <strong>${item.roles || item.downloadLabel || "待补充"}</strong>
           </div>
           <div class="meta-item">
-            <span>提交人</span>
-            <strong>${item.owner || "待补充"}</strong>
+            <span>${item.owner ? "提交人" : "来源底表"}</span>
+            <strong>${item.owner || data.meta.sourceFile || "待补充"}</strong>
           </div>
         </div>
         <div class="cta-row">
