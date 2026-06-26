@@ -13,6 +13,41 @@
     justify-content: center;
     padding: 24px 16px;
   }
+  .toolbar {
+    position: fixed;
+    right: 18px;
+    bottom: 18px;
+    z-index: 20;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px;
+  }
+  .download-btn {
+    display: inline-block;
+    appearance: none;
+    border: 0;
+    border-radius: 999px;
+    background: #0C447C;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 11px 16px;
+    box-shadow: 0 8px 24px rgba(12,68,124,0.22);
+    cursor: pointer;
+    text-decoration: none;
+  }
+  .download-btn:hover { background: #0A3968; }
+  .download-note {
+    max-width: 180px;
+    background: rgba(44,44,42,0.88);
+    color: #fff;
+    font-size: 11px;
+    line-height: 1.5;
+    padding: 8px 10px;
+    border-radius: 10px;
+    text-align: right;
+  }
   .card {
     width: 375px;
     background: #fff;
@@ -157,7 +192,12 @@
 </style>
 </head>
 <body>
-<div class="card">
+<div class="toolbar">
+  <a class="download-btn" href="WB共创营-活动介绍长图.png" download="WB共创坊-活动介绍长图.png">下载 PNG</a>
+  <div class="download-note">可直接下载活动介绍长图 PNG</div>
+</div>
+
+<div class="card" id="posterCard">
 
   <!-- Hero -->
   <div class="hero">
