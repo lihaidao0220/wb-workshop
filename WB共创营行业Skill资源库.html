@@ -250,40 +250,14 @@
     font-size: 14px;
   }
   .meta-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 12px;
-  }
-  .meta-item {
-    padding: 12px 14px;
-    border-radius: var(--r-md);
-    background: var(--neutral-50);
-    border: 1px solid var(--neutral-200);
-  }
-  .meta-item span {
-    display: block;
-    font-size: 11px;
-    color: var(--neutral-500);
-    margin-bottom: 4px;
-    letter-spacing: .4px;
-    text-transform: uppercase;
-  }
-  .meta-item strong {
-    display: block;
-    color: var(--neutral-900);
-    font-size: 13px;
-    line-height: 1.5;
+    display: none;
   }
   .cta-row {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-end;
     gap: 12px;
     padding-top: 2px;
-  }
-  .owner {
-    color: var(--neutral-500);
-    font-size: 12px;
   }
   .btn {
     display: inline-flex;
@@ -455,26 +429,11 @@
             <h3 class="card-title">${item.name}</h3>
             <div class="tag-row">
               ${priorityTag(item.category, "tag-blue")}
-              ${item.package ? priorityTag(item.package, "tag-green") : ""}
-              ${item.mainstreamPriority ? priorityTag(`主流媒体 ${item.mainstreamPriority}`, "tag-orange") : ""}
-              ${item.emergingPriority ? priorityTag(`新兴媒体 ${item.emergingPriority}`, "tag-blue") : ""}
-              ${item.linkKind ? priorityTag(item.linkKind, "tag-green") : ""}
             </div>
           </div>
         </div>
         <p class="summary">${item.summary}</p>
-        <div class="meta-grid">
-          <div class="meta-item">
-            <span>${item.roles ? "适用岗位" : "查看内容"}</span>
-            <strong>${item.roles || item.downloadLabel || "待补充"}</strong>
-          </div>
-          <div class="meta-item">
-            <span>${item.owner ? "提交人" : "来源底表"}</span>
-            <strong>${item.owner || data.meta.sourceFile || "待补充"}</strong>
-          </div>
-        </div>
         <div class="cta-row">
-          <div class="owner">Skill #${item.order}</div>
           ${button}
         </div>
       </article>
