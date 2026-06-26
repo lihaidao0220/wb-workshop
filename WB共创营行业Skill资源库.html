@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WB 共创营 · 行业 Skill 资源库</title>
+<style>
+  :root {
+    --brand: #1A54D6;
+    --brand-light: #EAF0FF;
+    --brand-dark: #0F35A0;
+    --accent: #00B896;
+    --accent-light: #E0FAF5;
+    --warn: #FF6B35;
+    --warn-light: #FFF0EB;
+    --neutral-900: #0F1A2E;
+    --neutral-700: #374151;
+    --neutral-500: #6B7280;
+    --neutral-300: #D1D5DB;
+    --neutral-200: #E5E7EB;
+    --neutral-100: #F3F4F6;
+    --neutral-50: #F9FAFB;
+    --white: #FFFFFF;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,.07);
+    --shadow-md: 0 6px 20px rgba(0,0,0,.08);
+    --r-sm: 8px;
+    --r-md: 12px;
+    --r-lg: 16px;
+    --r-xl: 24px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Helvetica Neue", sans-serif;
+    background: var(--neutral-50);
+    color: var(--neutral-700);
+    line-height: 1.7;
+  }
+  a { color: inherit; }
+
+  .page {
+    min-height: 100vh;
+    background:
+      radial-gradient(circle at top right, rgba(46,123,240,.14), transparent 24%),
+      linear-gradient(180deg, #F7FAFF 0%, #F9FAFB 280px, #F9FAFB 100%);
+  }
+  .container {
+    width: min(1120px, calc(100% - 32px));
+    margin: 0 auto;
+    padding-bottom: 72px;
+  }
+
+  .hero {
+    padding: 40px 0 28px;
+  }
+  .hero-card {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, #0A2880 0%, #1A54D6 50%, #2E7BF0 100%);
+    color: #fff;
+    border-radius: 0 0 var(--r-xl) var(--r-xl);
+    padding: 42px 32px 32px;
+  }
+  .hero-card::after {
+    content: "";
+    position: absolute;
+    right: -72px;
+    top: -72px;
+    width: 320px;
+    height: 320px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.06);
+  }
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 18px;
+    padding: 4px 14px;
+    border-radius: 999px;
+    background: rgba(255,255,255,.14);
+    border: 1px solid rgba(255,255,255,.24);
+    font-size: 12px;
+    letter-spacing: .4px;
+  }
+  .hero h1 {
+    font-size: clamp(28px, 4vw, 42px);
+    line-height: 1.2;
+    margin-bottom: 12px;
+    font-weight: 800;
+  }
+  .hero p {
+    max-width: 720px;
+    color: rgba(255,255,255,.84);
+    font-size: 15px;
+    margin-bottom: 24px;
+  }
+  .hero-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .hero-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    border-radius: 999px;
+    padding: 5px 14px;
+    border: 1px solid rgba(255,255,255,.2);
+    background: rgba(255,255,255,.12);
+    font-size: 12px;
+  }
+
+  .overview {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-top: -18px;
+  }
+  .metric {
+    background: var(--white);
+    border: 1px solid var(--neutral-200);
+    border-radius: var(--r-lg);
+    box-shadow: var(--shadow-sm);
+    padding: 18px 20px;
+  }
+  .metric-label {
+    display: block;
+    font-size: 12px;
+    color: var(--neutral-500);
+    margin-bottom: 6px;
+  }
+  .metric-value {
+    font-size: 28px;
+    line-height: 1;
+    color: var(--neutral-900);
+    font-weight: 800;
+  }
+  .metric-note {
+    font-size: 12px;
+    color: var(--neutral-500);
+    margin-top: 8px;
+  }
+
+  .toolbar {
+    margin-top: 28px;
+    background: var(--white);
+    border: 1px solid var(--neutral-200);
+    border-radius: var(--r-lg);
+    box-shadow: var(--shadow-sm);
+    padding: 22px 22px 18px;
+  }
+  .toolbar-top {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    align-items: flex-start;
+    margin-bottom: 16px;
+  }
+  .toolbar h2 {
+    color: var(--neutral-900);
+    font-size: 18px;
+    margin-bottom: 4px;
+  }
+  .toolbar p,
+  .toolbar-meta {
+    font-size: 13px;
+    color: var(--neutral-500);
+  }
+  .filter-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .filter-chip {
+    border: 1px solid var(--neutral-200);
+    background: var(--neutral-50);
+    color: var(--neutral-700);
+    border-radius: 999px;
+    padding: 9px 14px;
+    font-size: 13px;
+    line-height: 1;
+    cursor: pointer;
+    transition: all .15s ease;
+  }
+  .filter-chip:hover {
+    border-color: var(--brand);
+    color: var(--brand);
+  }
+  .filter-chip.active {
+    background: var(--brand-light);
+    border-color: var(--brand);
+    color: var(--brand-dark);
+    font-weight: 700;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    margin-top: 18px;
+  }
+  .card {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    background: var(--white);
+    border: 1px solid var(--neutral-200);
+    border-radius: var(--r-lg);
+    box-shadow: var(--shadow-sm);
+    padding: 22px;
+  }
+  .card:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-1px);
+    transition: transform .15s ease, box-shadow .15s ease;
+  }
+  .card-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .card-title {
+    font-size: 18px;
+    line-height: 1.35;
+    color: var(--neutral-900);
+    font-weight: 800;
+    margin-bottom: 10px;
+  }
+  .tag-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 999px;
+    padding: 4px 10px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .2px;
+  }
+  .tag-blue { background: var(--brand-light); color: var(--brand-dark); }
+  .tag-green { background: var(--accent-light); color: #0F6E56; }
+  .tag-orange { background: var(--warn-light); color: #B45309; }
+  .summary {
+    color: var(--neutral-700);
+    font-size: 14px;
+  }
+  .meta-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+  .meta-item {
+    padding: 12px 14px;
+    border-radius: var(--r-md);
+    background: var(--neutral-50);
+    border: 1px solid var(--neutral-200);
+  }
+  .meta-item span {
+    display: block;
+    font-size: 11px;
+    color: var(--neutral-500);
+    margin-bottom: 4px;
+    letter-spacing: .4px;
+    text-transform: uppercase;
+  }
+  .meta-item strong {
+    display: block;
+    color: var(--neutral-900);
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  .cta-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding-top: 2px;
+  }
+  .owner {
+    color: var(--neutral-500);
+    font-size: 12px;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 122px;
+    border-radius: 999px;
+    padding: 10px 16px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 700;
+    border: 1px solid var(--brand);
+    background: var(--brand);
+    color: #fff;
+  }
+  .btn.disabled {
+    border-color: var(--neutral-200);
+    background: var(--neutral-100);
+    color: var(--neutral-500);
+    cursor: not-allowed;
+  }
+
+  .empty {
+    display: none;
+    margin-top: 18px;
+    padding: 28px;
+    border-radius: var(--r-lg);
+    background: var(--white);
+    border: 1px dashed var(--neutral-300);
+    color: var(--neutral-500);
+    text-align: center;
+  }
+  .footer {
+    text-align: center;
+    margin-top: 28px;
+    color: #9CA3AF;
+    font-size: 12px;
+  }
+
+  @media (max-width: 960px) {
+    .overview { grid-template-columns: repeat(2, 1fr); }
+    .grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 640px) {
+    .container { width: min(100% - 24px, 1120px); }
+    .hero-card { padding: 34px 20px 26px; border-radius: 0 0 18px 18px; }
+    .overview { grid-template-columns: 1fr 1fr; margin-top: 14px; }
+    .toolbar-top { flex-direction: column; }
+    .meta-grid { grid-template-columns: 1fr; }
+    .cta-row { flex-direction: column; align-items: flex-start; }
+    .btn { width: 100%; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="container">
+    <section class="hero">
+      <div class="hero-card">
+        <div class="eyebrow">TENCENT CLOUD × WORKBUDDY</div>
+        <h1>行业 Skill 资源库</h1>
+        <p>沉淀共创营后续产出的行业 Skills，按场景标签快速筛选，集中查看每个 Skill 的适用岗位、能力说明与后续下载入口。</p>
+        <div class="hero-chips" id="hero-chips"></div>
+      </div>
+    </section>
+
+    <section class="overview" id="overview"></section>
+
+    <section class="toolbar">
+      <div class="toolbar-top">
+        <div>
+          <h2>按场景标签筛选</h2>
+          <p>当前先按表格中的“类型”字段筛选，后续补充下载链接后会自动显示查看按钮。</p>
+        </div>
+        <div class="toolbar-meta" id="toolbar-meta"></div>
+      </div>
+      <div class="filter-group" id="filters"></div>
+    </section>
+
+    <section class="grid" id="skills-grid"></section>
+    <section class="empty" id="empty-state">当前筛选条件下还没有可展示的 Skill。</section>
+
+    <div class="footer">腾讯云文化传媒行业线 × WorkBuddy · 2026</div>
+  </div>
+</div>
+
+<script src="data/skills-data.js"></script>
+<script>
+  const data = window.SKILL_DATA || { meta: {}, items: [] };
+  const state = { activeCategory: "全部" };
+
+  const heroChips = document.getElementById("hero-chips");
+  const overview = document.getElementById("overview");
+  const filters = document.getElementById("filters");
+  const grid = document.getElementById("skills-grid");
+  const emptyState = document.getElementById("empty-state");
+  const toolbarMeta = document.getElementById("toolbar-meta");
+
+  function makeChip(text) {
+    const chip = document.createElement("span");
+    chip.className = "hero-chip";
+    chip.textContent = text;
+    return chip;
+  }
+
+  function renderHero() {
+    const chips = [
+      `${data.meta.totalSkills || 0} 个 Skill`,
+      `${(data.meta.categories || []).length} 类场景`,
+      `${(data.meta.packages || []).length} 个 Skill 包`
+    ];
+    chips.forEach((item) => heroChips.appendChild(makeChip(item)));
+  }
+
+  function metric(label, value, note) {
+    return `
+      <div class="metric">
+        <span class="metric-label">${label}</span>
+        <div class="metric-value">${value}</div>
+        <div class="metric-note">${note}</div>
+      </div>
+    `;
+  }
+
+  function renderOverview() {
+    const businessCount = data.items.filter((item) => item.category === "业务创作类").length;
+    const officeCount = data.items.filter((item) => item.category === "通用办公类").length;
+    overview.innerHTML = [
+      metric("Skill 总数", data.meta.totalSkills || 0, "来自当前底表"),
+      metric("场景标签", (data.meta.categories || []).length, "支持筛选切换"),
+      metric("业务创作类", businessCount, "面向内容与视频生产"),
+      metric("通用办公类", officeCount, "面向通用协同与管理")
+    ].join("");
+  }
+
+  function renderFilters() {
+    const categories = ["全部", ...(data.meta.categories || [])];
+    filters.innerHTML = "";
+    categories.forEach((category) => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "filter-chip" + (state.activeCategory === category ? " active" : "");
+      const count = category === "全部"
+        ? data.items.length
+        : data.items.filter((item) => item.category === category).length;
+      button.textContent = `${category} · ${count}`;
+      button.addEventListener("click", () => {
+        state.activeCategory = category;
+        renderFilters();
+        renderGrid();
+      });
+      filters.appendChild(button);
+    });
+  }
+
+  function priorityTag(text, tone) {
+    return `<span class="tag ${tone}">${text}</span>`;
+  }
+
+  function renderCard(item) {
+    const button = item.downloadUrl
+      ? `<a class="btn" href="${item.downloadUrl}" target="_blank" rel="noopener noreferrer">查看 / 下载</a>`
+      : `<span class="btn disabled">链接待补充</span>`;
+
+    return `
+      <article class="card">
+        <div class="card-top">
+          <div>
+            <h3 class="card-title">${item.name}</h3>
+            <div class="tag-row">
+              ${priorityTag(item.category, "tag-blue")}
+              ${priorityTag(item.package, "tag-green")}
+              ${priorityTag(`主流媒体 ${item.mainstreamPriority}`, "tag-orange")}
+              ${priorityTag(`新兴媒体 ${item.emergingPriority}`, "tag-blue")}
+            </div>
+          </div>
+        </div>
+        <p class="summary">${item.summary}</p>
+        <div class="meta-grid">
+          <div class="meta-item">
+            <span>适用岗位</span>
+            <strong>${item.roles || "待补充"}</strong>
+          </div>
+          <div class="meta-item">
+            <span>提交人</span>
+            <strong>${item.owner || "待补充"}</strong>
+          </div>
+        </div>
+        <div class="cta-row">
+          <div class="owner">Skill #${item.order}</div>
+          ${button}
+        </div>
+      </article>
+    `;
+  }
+
+  function renderGrid() {
+    const visibleItems = state.activeCategory === "全部"
+      ? data.items
+      : data.items.filter((item) => item.category === state.activeCategory);
+
+    toolbarMeta.textContent = `数据来源：${data.meta.sourceFile || "未标注"} · 最近同步：${data.meta.generatedAt || "未标注"} · 当前展示 ${visibleItems.length} 项`;
+
+    if (!visibleItems.length) {
+      grid.innerHTML = "";
+      emptyState.style.display = "block";
+      return;
+    }
+
+    emptyState.style.display = "none";
+    grid.innerHTML = visibleItems
+      .sort((a, b) => a.order - b.order)
+      .map(renderCard)
+      .join("");
+  }
+
+  renderHero();
+  renderOverview();
+  renderFilters();
+  renderGrid();
+</script>
+</body>
+</html>
