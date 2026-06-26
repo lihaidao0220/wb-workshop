@@ -5,6 +5,25 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>WB 共创营 · 材料中心</title>
 <style>
+  :root {
+    --brand: #1A54D6;
+    --brand-dark: #0A2880;
+    --brand-light: #EAF0FF;
+    --navy-soft: #E8EDF7;
+    --teal: #00B896;
+    --teal-light: #E0FAF5;
+    --amber: #FFB84D;
+    --amber-light: #FFF5E5;
+    --neutral-900: #0F1A2E;
+    --neutral-700: #374151;
+    --neutral-500: #6B7280;
+    --neutral-300: #D1D5DB;
+    --neutral-200: #E5E7EB;
+    --neutral-100: #F3F4F6;
+    --white: #FFFFFF;
+    --shadow-sm: 0 8px 20px rgba(15,26,46,.06);
+    --shadow-md: 0 18px 42px rgba(15,26,46,.12);
+  }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
     font-family: -apple-system, "PingFang SC", "Helvetica Neue", sans-serif;
@@ -13,10 +32,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 40px 20px;
+    padding: 24px 20px;
   }
   .wrap { max-width: 480px; width: 100%; }
-  .header { text-align: center; margin-bottom: 32px; }
+  .header { text-align: center; margin-bottom: 20px; }
   .badge {
     display: inline-block;
     background: #1A54D6;
@@ -27,32 +46,101 @@
     letter-spacing: .5px;
     margin-bottom: 14px;
   }
-  h1 { font-size: 22px; font-weight: 700; color: #0F1A2E; margin-bottom: 6px; }
-  .sub { font-size: 14px; color: #6B7280; }
-  .cards { display: flex; flex-direction: column; gap: 14px; }
+  h1 { font-size: 21px; font-weight: 700; color: #0F1A2E; margin-bottom: 4px; line-height: 1.3; }
+  .sub { font-size: 13px; color: #6B7280; line-height: 1.45; }
+  .cards { display: flex; flex-direction: column; gap: 10px; }
   .card {
-    background: #fff;
-    border-radius: 14px;
-    padding: 22px 24px;
-    border: 1px solid #E5E7EB;
+    position: relative;
+    overflow: hidden;
+    background: rgba(255,255,255,.96);
+    border-radius: 20px;
+    padding: 13px 18px 14px;
+    border: 1px solid rgba(229,231,235,.92);
     text-decoration: none;
     display: flex;
     align-items: center;
-    gap: 18px;
-    transition: box-shadow .15s, transform .15s;
+    gap: 14px;
+    transition: box-shadow .18s, transform .18s, border-color .18s;
+    box-shadow: var(--shadow-sm);
   }
-  .card:hover { box-shadow: 0 6px 20px rgba(0,0,0,.10); transform: translateY(-2px); }
+  .card::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 5px;
+    background: linear-gradient(90deg, var(--brand) 0%, #2E7BF0 100%);
+  }
+  .card::after {
+    content: "";
+    position: absolute;
+    right: -30px;
+    bottom: -30px;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(26,84,214,.08), rgba(26,84,214,0));
+  }
+  .card:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-3px);
+    border-color: rgba(26,84,214,.20);
+  }
+  .card-teal::before { background: linear-gradient(90deg, var(--teal) 0%, #29D3B0 100%); }
+  .card-amber::before { background: linear-gradient(90deg, #F59E0B 0%, #FFCB69 100%); }
+  .card-navy::before { background: linear-gradient(90deg, var(--brand-dark) 0%, var(--brand) 100%); }
   .icon {
-    width: 48px; height: 48px; border-radius: 12px;
+    width: 46px; height: 46px; border-radius: 14px;
     display: flex; align-items: center; justify-content: center;
-    font-size: 24px; flex-shrink: 0;
+    font-size: 22px; flex-shrink: 0;
+    box-shadow: inset 0 0 0 1px rgba(15,26,46,.05);
   }
-  .icon-blue { background: #EAF0FF; }
-  .icon-navy { background: #E8EDF7; }
-  .card-body h2 { font-size: 15px; font-weight: 700; color: #0F1A2E; margin-bottom: 3px; }
-  .card-body p  { font-size: 13px; color: #6B7280; line-height: 1.5; }
-  .arrow { margin-left: auto; color: #D1D5DB; font-size: 18px; flex-shrink: 0; }
-  .footer { text-align: center; margin-top: 28px; font-size: 12px; color: #9CA3AF; }
+  .icon-blue { background: var(--brand-light); }
+  .icon-navy { background: var(--navy-soft); }
+  .icon-teal { background: var(--teal-light); }
+  .icon-amber { background: var(--amber-light); }
+  .card-body { flex: 1; position: relative; z-index: 1; }
+  .kicker {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 8px;
+    border-radius: 999px;
+    background: rgba(15,26,46,.05);
+    color: var(--neutral-500);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: .3px;
+    margin-bottom: 4px;
+  }
+  .card-body h2 { font-size: 15px; font-weight: 800; color: var(--neutral-900); margin-bottom: 2px; }
+  .card-body p  { font-size: 12px; color: var(--neutral-500); line-height: 1.45; }
+  .arrow {
+    margin-left: auto;
+    color: var(--brand);
+    background: rgba(26,84,214,.08);
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+  }
+  .footer { text-align: center; margin-top: 18px; font-size: 11px; color: #9CA3AF; }
+  @media (max-width: 560px) {
+    body { padding: 18px 14px 24px; }
+    .wrap { max-width: 100%; }
+    .header { margin-bottom: 16px; }
+    .cards { gap: 8px; }
+    .card { padding: 12px 14px 13px; gap: 12px; }
+    .icon { width: 42px; height: 42px; border-radius: 12px; font-size: 20px; }
+    .card-body h2 { font-size: 14px; }
+    .card-body p { font-size: 11.5px; }
+  }
 </style>
 </head>
 <body>
@@ -63,9 +151,10 @@
     <p class="sub">传媒行业 AI 提效共创计划</p>
   </div>
   <div class="cards">
-    <a class="card" href="WB共创营-活动介绍长图.html">
+    <a class="card card-navy" href="WB共创营-活动介绍长图.html">
       <div class="icon icon-navy">🤝</div>
       <div class="card-body">
+        <div class="kicker">项目认识</div>
         <h2>AI 共创坊 · 活动介绍</h2>
         <p>共创坊是什么、您将获得什么<br/>适合哪些岗位 · 如何申请</p>
       </div>
@@ -74,22 +163,25 @@
     <a class="card" href="WB共创营工作坊材料.html">
       <div class="icon icon-blue">📖</div>
       <div class="card-body">
+        <div class="kicker">入门学习</div>
         <h2>WorkBuddy 从 0 到 1</h2>
         <p>传媒人的 AI 提效完全入门手册<br/>下载安装 · 界面导览 · Skill 搭建 · 全流程</p>
       </div>
       <span class="arrow">›</span>
     </a>
-    <a class="card" href="https://cts-no10-media2.devcloud.woa.com/api/v1/public/team-docs/303c3493f1adacb1dc3ef30bdca0d3ad6a6d141fa013fec889628192a372c587/view" target="_blank" rel="noopener noreferrer">
-      <div class="icon icon-navy">🔗</div>
+    <a class="card card-amber" href="https://cts-no10-media2.devcloud.woa.com/api/v1/public/team-docs/303c3493f1adacb1dc3ef30bdca0d3ad6a6d141fa013fec889628192a372c587/view" target="_blank" rel="noopener noreferrer">
+      <div class="icon icon-amber">🔗</div>
       <div class="card-body">
+        <div class="kicker">实战参考</div>
         <h2>WorkBuddy 使用经验分享</h2>
         <p>从安装上手到职场实战场景<br/>邮件文档 · PPT 调研 · 进阶技巧</p>
       </div>
       <span class="arrow">›</span>
     </a>
-    <a class="card" href="WB共创营行业Skill资源库.html">
-      <div class="icon icon-blue">🧩</div>
+    <a class="card card-teal" href="WB共创营行业Skill资源库.html">
+      <div class="icon icon-teal">🧩</div>
       <div class="card-body">
+        <div class="kicker">资源沉淀</div>
         <h2>行业 Skill 资源库</h2>
         <p>按场景标签筛选共创营沉淀 Skill<br/>能力介绍 · 适用岗位 · 后续下载入口</p>
       </div>
