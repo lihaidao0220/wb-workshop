@@ -162,6 +162,32 @@
     flex-wrap: wrap;
     gap: 10px;
   }
+  .filter-row {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .filter-row-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .4px;
+    color: var(--neutral-500);
+    margin-bottom: -2px;
+  }
+  .filter-row + .filter-row {
+    border-top: 1px solid rgba(229,231,235,.7);
+    padding-top: 10px;
+  }
+  .filter-chip.scene-chip:hover {
+    border-color: #7C3AED;
+    color: #5B2D8E;
+  }
+  .filter-chip.scene-chip.active {
+    background: linear-gradient(180deg, #F5F0FB 0%, #EDE5F8 100%);
+    border-color: #7C3AED;
+    color: #5B2D8E;
+    font-weight: 700;
+  }
   .filter-chip {
     border: 1px solid rgba(209,213,219,.9);
     background: rgba(249,250,251,.92);
@@ -263,6 +289,7 @@
   }
   .tag-blue { background: linear-gradient(180deg, #F4F7FB 0%, #EAF1FA 100%); color: var(--brand-dark); }
   .tag-green { background: linear-gradient(180deg, #F3F5F8 0%, #EEF1F5 100%); color: var(--slate); }
+  .tag-purple { background: linear-gradient(180deg, #F5F0FB 0%, #EDE5F8 100%); color: #5B2D8E; }
   .summary-panel {
     background: linear-gradient(180deg, rgba(250,243,227,.82), rgba(249,250,251,.88));
     border: 1px solid rgba(229,231,235,.92);
@@ -349,7 +376,7 @@
       </div>
       <div class="toolbar-meta" id="toolbar-meta"></div>
     </div>
-    <div class="filter-group" id="filters"></div>
+    <div class="filter-row" id="filters"></div>
   </section>
 
   <section class="grid" id="materials-grid"></section>
@@ -361,7 +388,7 @@
 <script src="data/reference-materials-data.js"></script>
 <script>
   const data = window.REFERENCE_MATERIALS_DATA || { meta: {}, items: [] };
-  const state = { activeRole: "全部" };
+  const state = { activeRole: "全部", activeScene: "全部" };
 
   const heroChips = document.getElementById("hero-chips");
   const overview = document.getElementById("overview");
@@ -378,9 +405,12 @@
   }
 
   function renderHero() {
+    const roles = (data.meta.roles || []).length;
+    const scenes = (data.meta.scenes || []).length;
     const chips = [
       `${data.meta.totalMaterials || 0} 份材料`,
-      `${(data.meta.roles || []).length} 类岗位`
+      `${roles} 类岗位`,
+      ...(scenes ? [`${scenes} 类场景`] : [])
     ];
     chips.forEach((item) => heroChips.appendChild(makeChip(item)));
   }
@@ -396,30 +426,79 @@
   }
 
   function renderOverview() {
+    const scenes = (data.meta.scenes || []).length;
     overview.innerHTML = [
-      metric("材料总数", data.meta.totalMaterials || 0, "可直接查看的岗位参考材料"),
-      metric("岗位标签", (data.meta.roles || []).length, "按岗位快速筛选与查看")
+      metric("材料总数", data.meta.totalMaterials || 0, "可直接查看的岗位与场景参考材料"),
+      metric("岗位 / 场景", (data.meta.roles || []).length + " / " + scenes, "按岗位或场景快速筛选查看")
     ].join("");
   }
 
+  function makeFilterChip(label, count, isActive, isScene, onClick) {
+    const button = document.createElement("button");
+    button.type = "button";
+    const extraClass = isScene ? " scene-chip" : "";
+    button.className = "filter-chip" + extraClass + (isActive ? " active" : "");
+    button.textContent = `${label} · ${count}`;
+    button.addEventListener("click", onClick);
+    return button;
+  }
+
+  function visibleCount(dimension, label) {
+    if (label === "全部") {
+      return data.items.filter(it => !dimension || it.dimension === dimension).length;
+    }
+    return data.items.filter(it => it.role === label).length;
+  }
+
   function renderFilters() {
-    const roles = ["全部", ...(data.meta.roles || [])];
     filters.innerHTML = "";
-    roles.forEach((role) => {
-      const button = document.createElement("button");
-      button.type = "button";
-      button.className = "filter-chip" + (state.activeRole === role ? " active" : "");
-      const count = role === "全部"
-        ? data.items.length
-        : data.items.filter((item) => item.role === role).length;
-      button.textContent = `${role} · ${count}`;
-      button.addEventListener("click", () => {
-        state.activeRole = role;
+
+    // — 岗位行 —
+    const roleRow = document.createElement("div");
+    roleRow.style.cssText = "display:flex;flex-wrap:wrap;align-items:center;gap:10px;";
+    const roleLabel = document.createElement("span");
+    roleLabel.className = "filter-row-label";
+    roleLabel.textContent = "岗位";
+    roleRow.appendChild(roleLabel);
+
+    const roleOptions = ["全部", ...(data.meta.roles || [])];
+    roleOptions.forEach((r) => {
+      const cnt = r === "全部"
+        ? data.items.filter(it => it.dimension === "role").length
+        : data.items.filter(it => it.role === r).length;
+      const chip = makeFilterChip(r, cnt, state.activeRole === r, false, () => {
+        state.activeRole = r;
         renderFilters();
         renderGrid();
       });
-      filters.appendChild(button);
+      roleRow.appendChild(chip);
     });
+    filters.appendChild(roleRow);
+
+    // — 场景行（仅当有场景数据时显示）—
+    const scenes = data.meta.scenes || [];
+    if (scenes.length) {
+      const sceneRow = document.createElement("div");
+      sceneRow.style.cssText = "display:flex;flex-wrap:wrap;align-items:center;gap:10px;";
+      const sceneLabel = document.createElement("span");
+      sceneLabel.className = "filter-row-label";
+      sceneLabel.textContent = "场景";
+      sceneRow.appendChild(sceneLabel);
+
+      const sceneOptions = ["全部", ...scenes];
+      sceneOptions.forEach((s) => {
+        const cnt = s === "全部"
+          ? data.items.filter(it => it.dimension === "scene").length
+          : data.items.filter(it => it.role === s).length;
+        const chip = makeFilterChip(s, cnt, state.activeScene === s, true, () => {
+          state.activeScene = s;
+          renderFilters();
+          renderGrid();
+        });
+        sceneRow.appendChild(chip);
+      });
+      filters.appendChild(sceneRow);
+    }
   }
 
   function tag(text, className) {
@@ -433,6 +512,7 @@
   }
 
   function renderCard(item) {
+    const roleTagClass = item.dimension === "scene" ? "tag-purple" : "tag-blue";
     return `
       <article class="card">
         <div class="card-top">
@@ -440,7 +520,7 @@
           <div class="card-head">
             <h3 class="card-title">${item.title}</h3>
             <div class="tag-row">
-              ${tag(item.role, "tag-blue")}
+              ${tag(item.role, roleTagClass)}
               ${tag(item.source || "参考材料", "tag-green")}
             </div>
           </div>
@@ -457,9 +537,24 @@
   }
 
   function renderGrid() {
-    const visibleItems = state.activeRole === "全部"
-      ? data.items
-      : data.items.filter((item) => item.role === state.activeRole);
+    let visibleItems = data.items;
+
+    // 岗位筛选
+    if (state.activeRole !== "全部") {
+      visibleItems = visibleItems.filter(it => it.role === state.activeRole);
+    } else {
+      // "全部"状态下，如果场景也是"全部"就全显；否则只按场景筛
+      if (state.activeScene !== "全部") {
+        visibleItems = visibleItems.filter(it => it.role === state.activeScene);
+      }
+    }
+
+    // 场景筛选（当岗位不是"全部"时场景筛选不叠加，反之亦然）
+    if (state.activeRole === "全部" && state.activeScene !== "全部") {
+      visibleItems = data.items.filter(it => it.role === state.activeScene);
+    } else if (state.activeRole !== "全部") {
+      visibleItems = data.items.filter(it => it.role === state.activeRole);
+    }
 
     toolbarMeta.textContent = `最近同步：${data.meta.generatedAt || "未标注"} · 当前展示 ${visibleItems.length} 项`;
 

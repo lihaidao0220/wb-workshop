@@ -52,6 +52,18 @@ def infer_summary(role: str, title: str, source: str) -> str:
     return f"面向 {role} 场景的参考材料，适合在宣导或培训中帮助团队快速理解相关能力与使用方式。"
 
 
+# 明确属于"岗位"维度的关键词；其余归入"场景"
+ROLE_KEYWORDS = {"HR", "财务", "法务", "税务", "人力", "运营", "市场", "销售", "采购", "行政", "研发", "产品", "设计", "客服", "IT"}
+
+
+def classify_dimension(label: str) -> str:
+    """Return 'role' if label matches a job function, else 'scene'."""
+    for kw in ROLE_KEYWORDS:
+        if kw in label:
+            return "role"
+    return "scene"
+
+
 def infer_material_type(link: str, source: str) -> str:
     if "mp.weixin.qq.com" in link:
         return "文章"
@@ -106,6 +118,7 @@ def workbook_to_items(source: Path) -> list[dict[str, object]]:
             "id": f"material-{order}",
             "order": order,
             "role": role,
+            "dimension": classify_dimension(role),
             "title": title,
             "summary": final_summary,
             "linkUrl": link_url,
@@ -119,13 +132,22 @@ def workbook_to_items(source: Path) -> list[dict[str, object]]:
 
 def build_payload(source: Path) -> dict[str, object]:
     items = workbook_to_items(source)
-    roles = []
-    seen = set()
+    roles: list[str] = []
+    scenes: list[str] = []
+    seen_roles: set[str] = set()
+    seen_scenes: set[str] = set()
     for item in items:
-        role = item["role"]
-        if role and role not in seen:
-            roles.append(role)
-            seen.add(role)
+        label = item["role"]
+        if not label:
+            continue
+        if item["dimension"] == "role":
+            if label not in seen_roles:
+                roles.append(label)
+                seen_roles.add(label)
+        else:
+            if label not in seen_scenes:
+                scenes.append(label)
+                seen_scenes.add(label)
 
     return {
         "meta": {
@@ -134,6 +156,7 @@ def build_payload(source: Path) -> dict[str, object]:
             "generatedAt": datetime.now().strftime("%Y-%m-%d %H:%M"),
             "totalMaterials": len(items),
             "roles": roles,
+            "scenes": scenes,
         },
         "items": items,
     }
