@@ -2,7 +2,7 @@ window.SKILL_DATA = {
   "meta": {
     "title": "行业 Skill 资源库",
     "sourceFile": "Skill收集评测表.xlsx",
-    "generatedAt": "2026-06-26 14:51",
+    "generatedAt": "2026-07-01 10:02",
     "totalSkills": 20,
     "categories": [
       "内容创作",
