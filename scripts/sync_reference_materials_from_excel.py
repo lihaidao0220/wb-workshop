@@ -80,7 +80,7 @@ def workbook_to_items(source: Path) -> list[dict[str, object]]:
         def get_value(key: str) -> str:
             return cell_text(row_values[index[key]]) if key in index else ""
 
-        role = get_value("岗位/职能")
+        role = get_value("岗位/场景") or get_value("岗位/职能")
         title = get_value("材料标题")
         summary = get_value("材料简介")
         source_name = get_value("来源")
