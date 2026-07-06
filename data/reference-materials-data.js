@@ -2,14 +2,15 @@ window.REFERENCE_MATERIALS_DATA = {
   "meta": {
     "title": "参考材料库",
     "sourceFile": "参考材料库.xlsx",
-    "generatedAt": "2026-07-01 17:35",
-    "totalMaterials": 5,
+    "generatedAt": "2026-07-06 22:48",
+    "totalMaterials": 8,
     "roles": [
       "HR",
       "财务"
     ],
     "scenes": [
-      "内容创作"
+      "内容创作",
+      "通用"
     ]
   },
   "items": [
@@ -72,6 +73,42 @@ window.REFERENCE_MATERIALS_DATA = {
       "source": "Workbuddy",
       "materialType": "文章",
       "slug": "教你用workbuddy写一部属于自己的小说"
+    },
+    {
+      "id": "material-6",
+      "order": 6,
+      "role": "通用",
+      "dimension": "scene",
+      "title": "往期WB&CB实战案例",
+      "summary": "实战场景指南、组织案例等集合",
+      "linkUrl": "https://doc.weixin.qq.com/smartsheet/s3_AMsAHAa5ACgCNiSxRqUpxSOKEc0et?scode=AJEAIQdfAAohNK19YSAE0A7QZ6ACc&tab=ss_79itpy&viewId=v9o3ZJ",
+      "source": "腾讯内部",
+      "materialType": "内部材料",
+      "slug": "往期wbcb实战案例"
+    },
+    {
+      "id": "material-7",
+      "order": 7,
+      "role": "通用",
+      "dimension": "scene",
+      "title": "WorkBuddy 个人版与企业版对比说明",
+      "summary": "WB提供个人版与企业版两大体系。个人版将从单一专业版升级为标准/高级/旗舰三档体系。企业版分SaaS旗舰版（公有云）和专享版（专有云/私有化）两种部署形态。",
+      "linkUrl": "",
+      "source": "腾讯内部",
+      "materialType": "内部材料",
+      "slug": "workbuddy-个人版与企业版对比说明"
+    },
+    {
+      "id": "material-8",
+      "order": 8,
+      "role": "通用",
+      "dimension": "scene",
+      "title": "WB、CB产品售卖策略",
+      "summary": "产品定位、售卖及商业化策略、竞品分析等产品文档",
+      "linkUrl": "https://csig.lexiangla.com/teams/k100655/docs/849f34702f0b11f1a904d622e785016e",
+      "source": "腾讯内部",
+      "materialType": "内部材料",
+      "slug": "wbcb产品售卖策略"
     }
   ]
 };
