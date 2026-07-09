@@ -193,7 +193,7 @@
 </head>
 <body>
 <div class="toolbar">
-  <a class="download-btn" href="WB共创营-活动介绍长图.png" download="WB共创坊-活动介绍长图.png">下载 PNG</a>
+  <button class="download-btn" id="downloadPngBtn" type="button">下载 PNG</button>
   <div class="download-note">可直接下载活动介绍长图 PNG</div>
 </div>
 
@@ -575,5 +575,48 @@
   </div>
 
 </div>
+
+<script src="https://unpkg.com/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script>
+  (function () {
+    var btn = document.getElementById('downloadPngBtn');
+    if (!btn) return;
+    var originalText = btn.textContent;
+
+    btn.addEventListener('click', function () {
+      var toolbar = document.querySelector('.toolbar');
+      var target = document.getElementById('posterCard');
+      if (!target || typeof html2canvas === 'undefined') {
+        window.alert('截图组件加载失败，请检查网络连接后重试。');
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = '生成中…';
+      // 截图前隐藏工具栏，避免固定定位元素被一起截入
+      if (toolbar) toolbar.style.visibility = 'hidden';
+
+      html2canvas(target, {
+        backgroundColor: '#ffffff',
+        scale: 2,
+        useCORS: true
+      }).then(function (canvas) {
+        var link = document.createElement('a');
+        link.download = 'WB共创坊-活动介绍长图.png';
+        link.href = canvas.toDataURL('image/png');
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }).catch(function (err) {
+        console.error(err);
+        window.alert('生成图片失败，请重试。');
+      }).finally(function () {
+        if (toolbar) toolbar.style.visibility = 'visible';
+        btn.disabled = false;
+        btn.textContent = originalText;
+      });
+    });
+  })();
+</script>
 </body>
 </html>
