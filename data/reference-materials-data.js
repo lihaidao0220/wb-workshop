@@ -2,7 +2,7 @@ window.REFERENCE_MATERIALS_DATA = {
   "meta": {
     "title": "参考材料库",
     "sourceFile": "参考材料库.xlsx",
-    "generatedAt": "2026-07-06 22:48",
+    "generatedAt": "2026-07-12 02:16",
     "totalMaterials": 8,
     "roles": [
       "HR",
@@ -93,7 +93,7 @@ window.REFERENCE_MATERIALS_DATA = {
       "dimension": "scene",
       "title": "WorkBuddy 个人版与企业版对比说明",
       "summary": "WB提供个人版与企业版两大体系。个人版将从单一专业版升级为标准/高级/旗舰三档体系。企业版分SaaS旗舰版（公有云）和专享版（专有云/私有化）两种部署形态。",
-      "linkUrl": "https://lihaidao0220.github.io/wb-workshop/files/WorkBuddy_%E4%B8%AA%E4%BA%BA%E7%89%88%E4%B8%8E%E4%BC%81%E4%B8%9A%E7%89%88%E5%AF%B9%E6%AF%94%E8%AF%B4%E6%98%8E.pdf",
+      "linkUrl": "",
       "source": "腾讯内部",
       "materialType": "内部材料",
       "slug": "workbuddy-个人版与企业版对比说明"
