@@ -2,15 +2,17 @@ window.REFERENCE_MATERIALS_DATA = {
   "meta": {
     "title": "参考材料库",
     "sourceFile": "参考材料库.xlsx",
-    "generatedAt": "2026-07-12 02:16",
-    "totalMaterials": 8,
+    "generatedAt": "2026-07-12 02:24",
+    "totalMaterials": 11,
     "roles": [
       "HR",
-      "财务"
+      "财务",
+      "采购"
     ],
     "scenes": [
       "内容创作",
-      "通用"
+      "通用",
+      "邮件处理"
     ]
   },
   "items": [
@@ -109,6 +111,42 @@ window.REFERENCE_MATERIALS_DATA = {
       "source": "腾讯内部",
       "materialType": "内部材料",
       "slug": "wbcb产品售卖策略"
+    },
+    {
+      "id": "material-9",
+      "order": 9,
+      "role": "采购",
+      "dimension": "role",
+      "title": "打工人必备！教你用WorkBuddy制作自己的文件审核Skill",
+      "summary": "采购、法务、HR、财务等岗位常面临“材料多、容易漏、要出报告”的困境（如多份标书、合同、简历、报销单比对）。这类工作的本质是找差异、做判断、给结论，传统人工处理效率低且容错率低。这篇文章介绍了如何利用 WorkBuddy​ 制作专属的“多文档比对 Skill”，以解决工作中多份材料审核比对耗时、易漏的痛点，并以“评标审核”为例详细阐述了实操流程。",
+      "linkUrl": "https://mp.weixin.qq.com/s/oFjSrlTp5VlMzPwN_iPOjg",
+      "source": "Workbuddy",
+      "materialType": "文章",
+      "slug": "打工人必备教你用workbuddy制作自己的文件审核skill"
+    },
+    {
+      "id": "material-10",
+      "order": 10,
+      "role": "通用",
+      "dimension": "scene",
+      "title": "我常用的18个WorkBuddy提效技巧，你可以直接抄",
+      "summary": "腾讯WorkBuddy首批Nova大使“大湾区靓仔”分享的18个落地提效技巧，核心是教用户跳出“把AI当聊天框”的误区，把WorkBuddy真正嵌入工作流程，覆盖项目开发核心场景、日常办公场景。",
+      "linkUrl": "https://mp.weixin.qq.com/s/t06LsAcoCMCbZynpg8J_WQ",
+      "source": "Workbuddy",
+      "materialType": "文章",
+      "slug": "我常用的18个workbuddy提效技巧你可以直接抄"
+    },
+    {
+      "id": "material-11",
+      "order": 11,
+      "role": "邮件处理",
+      "dimension": "scene",
+      "title": "5分钟接入Agent Mail，教你让WorkBuddy自动处理邮件",
+      "summary": "QQ邮箱Agent Mail内测上线后的实操指南，核心介绍如何给WorkBuddy配置专属AI邮箱以及典型使用场景举例，实现邮件全流程自动化处理。",
+      "linkUrl": "https://mp.weixin.qq.com/s/4sEZdOlEptsqbwmWSUplVQ",
+      "source": "Workbuddy",
+      "materialType": "文章",
+      "slug": "5分钟接入agent-mail教你让workbuddy自动处理邮件"
     }
   ]
 };
