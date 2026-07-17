@@ -2,8 +2,8 @@ window.REFERENCE_MATERIALS_DATA = {
   "meta": {
     "title": "参考材料库",
     "sourceFile": "参考材料库.xlsx",
-    "generatedAt": "2026-07-17 16:50",
-    "totalMaterials": 14,
+    "generatedAt": "2026-07-17 16:54",
+    "totalMaterials": 15,
     "roles": [
       "HR",
       "财务",
@@ -153,6 +153,18 @@ window.REFERENCE_MATERIALS_DATA = {
       "order": 12,
       "role": "通用",
       "dimension": "scene",
+      "title": "全国首个！WorkBuddy OPC合作社区落地成都",
+      "summary": "全国首个WorkBuddy OPC合作社区近日落地成都天府长岛数字文创园，面向一人公司创业者和小团队，以“政府扶持、平台支持、社区共创”模式，通过每月4000通用算力积分补贴、免费AI实战培训、全场景提效工具支持及专家长期陪跑，帮助个体降低AI创业门槛、放大创意与执行力，目前已助力首批入驻团队实现研发周期压缩90%、单人产出匹敌专业团队等成效，未来将从成都试点推广至全国，让“一个人的公司拥有一支团队的生产力”。",
+      "linkUrl": "https://mp.weixin.qq.com/s/4lKPebeuQdBiqFTmbCDCiQ",
+      "source": "Workbuddy",
+      "materialType": "文章",
+      "slug": "全国首个workbuddy-opc合作社区落地成都"
+    },
+    {
+      "id": "material-13",
+      "order": 13,
+      "role": "通用",
+      "dimension": "scene",
       "title": "全国首个WorkBuddy OPC合作社区成立！社区合作计划在全国开放申请",
       "summary": "全国首个聚焦OPC（一人公司/超级个体）的WorkBuddy合作社区落地成都，首创“政府扶持+平台支撑+社区共创”的可复制模式，依托集成化AI智能工作台WorkBuddy，配套每月4000通用算力补贴、全周期专家陪跑及生态资源对接，已验证可帮7人团队将课程研发周期压缩80%、创作者研报产出效率提升75%，现面向全国开放五大扶持体系合作申请，让超级个体真正拥有“企业级AI生产力”，从单打独斗走向生态共创。",
       "linkUrl": "https://mp.weixin.qq.com/s/5iyfCuOIkrsId1fTypnz3A",
@@ -161,8 +173,8 @@ window.REFERENCE_MATERIALS_DATA = {
       "slug": "全国首个workbuddy-opc合作社区成立社区合作计划在全国开放申请"
     },
     {
-      "id": "material-13",
-      "order": 13,
+      "id": "material-14",
+      "order": 14,
       "role": "通用",
       "dimension": "scene",
       "title": "从使用者到从业者，腾讯云WorkBuddy OPC认证启动",
@@ -173,8 +185,8 @@ window.REFERENCE_MATERIALS_DATA = {
       "slug": "从使用者到从业者腾讯云workbuddy-opc认证启动"
     },
     {
-      "id": "material-14",
-      "order": 14,
+      "id": "material-15",
+      "order": 15,
       "role": "通用",
       "dimension": "scene",
       "title": "课程工作坊： WorkBuddy助力工作提效",
