@@ -2,8 +2,8 @@ window.REFERENCE_MATERIALS_DATA = {
   "meta": {
     "title": "参考材料库",
     "sourceFile": "参考材料库.xlsx",
-    "generatedAt": "2026-07-12 02:24",
-    "totalMaterials": 11,
+    "generatedAt": "2026-07-17 16:50",
+    "totalMaterials": 14,
     "roles": [
       "HR",
       "财务",
@@ -147,6 +147,42 @@ window.REFERENCE_MATERIALS_DATA = {
       "source": "Workbuddy",
       "materialType": "文章",
       "slug": "5分钟接入agent-mail教你让workbuddy自动处理邮件"
+    },
+    {
+      "id": "material-12",
+      "order": 12,
+      "role": "通用",
+      "dimension": "scene",
+      "title": "全国首个WorkBuddy OPC合作社区成立！社区合作计划在全国开放申请",
+      "summary": "全国首个聚焦OPC（一人公司/超级个体）的WorkBuddy合作社区落地成都，首创“政府扶持+平台支撑+社区共创”的可复制模式，依托集成化AI智能工作台WorkBuddy，配套每月4000通用算力补贴、全周期专家陪跑及生态资源对接，已验证可帮7人团队将课程研发周期压缩80%、创作者研报产出效率提升75%，现面向全国开放五大扶持体系合作申请，让超级个体真正拥有“企业级AI生产力”，从单打独斗走向生态共创。",
+      "linkUrl": "https://mp.weixin.qq.com/s/5iyfCuOIkrsId1fTypnz3A",
+      "source": "腾讯云",
+      "materialType": "文章",
+      "slug": "全国首个workbuddy-opc合作社区成立社区合作计划在全国开放申请"
+    },
+    {
+      "id": "material-13",
+      "order": 13,
+      "role": "通用",
+      "dimension": "scene",
+      "title": "从使用者到从业者，腾讯云WorkBuddy OPC认证启动",
+      "summary": "打通“工具使用→职业赋能”的进阶路径：面向独立开发者、自由职业者等OPC人群，通过11门从基础操作到实战落地的系统课程，帮学习者把AI效率工具真正转化为“一人公司”的经营能力；完成免费学习后仅需330元即可考取腾讯云官方颁发的2年有效电子证书，低成本就能获得权威能力背书，实现从普通使用者到AI经营从业者的身份跃升。",
+      "linkUrl": "https://mp.weixin.qq.com/s/IR-RztyDVrIx9ogWdRTG_Q",
+      "source": "Workbuddy",
+      "materialType": "文章",
+      "slug": "从使用者到从业者腾讯云workbuddy-opc认证启动"
+    },
+    {
+      "id": "material-14",
+      "order": 14,
+      "role": "通用",
+      "dimension": "scene",
+      "title": "课程工作坊： WorkBuddy助力工作提效",
+      "summary": "腾讯学堂WB工作坊课程（线下，可到客户所在地进行支持）\n结算方式：\n1、客户免费，内部虚拟结算1万元，GM审批实际不产生费用（但需要支持讲师到客户所在地的差旅费用）。申请网页：https://academy-outward.woa.com/MyApply\n2、磐石下单，4万/节，产品名字：腾讯云代码助手WorkBuddy专家讲师-定制课程-面授服务(线下)；腾讯WorkBuddy专家讲师-定制课程-面授服务(线下)",
+      "linkUrl": "https://doc.weixin.qq.com/doc/w3_AJEAJAZaACoCNQ8cTVx68ToyFROwJ?scode=AJEAIQdfAAoW7HtQBXAOoA1QYmAFQ",
+      "source": "腾讯学堂",
+      "materialType": "参考材料",
+      "slug": "课程工作坊-workbuddy助力工作提效"
     }
   ]
 };
