@@ -151,6 +151,21 @@
   }
   .qr-title { font-size: 12px; font-weight: 600; color: #2C2C2A; margin-bottom: 2px; }
   .qr-desc { font-size: 11px; color: #5F5E5A; line-height: 1.5; }
+  .qr-img { cursor: zoom-in; }
+  .qr-lightbox {
+    display: none;
+    position: fixed; inset: 0; z-index: 999;
+    background: rgba(15,26,46,.72);
+    align-items: center; justify-content: center;
+    padding: 24px;
+    cursor: zoom-out;
+  }
+  .qr-lightbox.open { display: flex; }
+  .qr-lightbox img {
+    width: min(320px, 82vw); height: auto;
+    border-radius: 12px; background: #fff; padding: 14px;
+    box-shadow: 0 20px 60px rgba(0,0,0,.35);
+  }
   .format-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 4px; }
   .format-item {
     display: flex; gap: 12px; align-items: flex-start;
@@ -346,7 +361,15 @@
     </div>
 
     <div class="qr-card">
-      <img class="qr-img" src="assets/WB使用反馈-问卷二维码.png" alt="WB 使用反馈问卷二维码">
+      <img class="qr-img qr-zoomable" src="assets/WB工作流收集问卷-纯码.png" alt="WB 工作流收集问卷二维码">
+      <div>
+        <div class="qr-title">扫码填写工作流收集问卷</div>
+        <div class="qr-desc">提前告诉我们你的痛点场景，我们会围绕真实工作流场景做小范围共创和打磨，有共性卡点会优先考虑～</div>
+      </div>
+    </div>
+
+    <div class="qr-card">
+      <img class="qr-img qr-zoomable" src="assets/WB使用反馈-问卷二维码.png" alt="WB 使用反馈问卷二维码">
       <div>
         <div class="qr-title">扫码填写使用反馈问卷</div>
         <div class="qr-desc">扫码即可提交图文反馈，几分钟完成，帮助我们持续优化产品和行业Skill，清晰完整的图文反馈会有机会出现在我们的腾讯云智慧传媒公众号/视频号上进行企业和WB的合作宣传～</div>
@@ -595,7 +618,27 @@
 
 </div>
 
+<div class="qr-lightbox" id="qrLightbox">
+  <img src="" alt="二维码放大" id="qrLightboxImg">
+</div>
+
 <script src="https://unpkg.com/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script>
+  (function () {
+    var lightbox = document.getElementById('qrLightbox');
+    var lightboxImg = document.getElementById('qrLightboxImg');
+    document.querySelectorAll('.qr-zoomable').forEach(function (img) {
+      img.addEventListener('click', function (e) {
+        e.stopPropagation();
+        lightboxImg.src = img.src;
+        lightbox.classList.add('open');
+      });
+    });
+    lightbox.addEventListener('click', function () {
+      lightbox.classList.remove('open');
+    });
+  })();
+</script>
 <script>
   (function () {
     var btn = document.getElementById('downloadPngBtn');

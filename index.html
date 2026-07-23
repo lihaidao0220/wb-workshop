@@ -36,6 +36,23 @@
   }
   .wrap { max-width: 480px; width: 100%; }
   .header { text-align: center; margin-bottom: 20px; }
+  .layout-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .col-modes, .col-cards { width: 100%; }
+
+  @media (min-width: 900px) {
+    .wrap { max-width: 1080px; }
+    .layout-grid {
+      flex-direction: row;
+      align-items: flex-start;
+      gap: 24px;
+    }
+    .col-modes { flex: 1.05; min-width: 0; }
+    .col-cards { flex: 1; min-width: 0; }
+  }
   .badge {
     display: inline-block;
     background: #1A54D6;
@@ -131,6 +148,74 @@
     z-index: 1;
   }
   .footer { text-align: center; margin-top: 18px; font-size: 11px; color: #9CA3AF; }
+
+  .modes-title {
+    font-size: 15px; font-weight: 800; color: var(--neutral-900);
+    margin: 0 2px 10px;
+  }
+  .mode-card {
+    border-radius: 18px; padding: 16px 16px 14px; margin-bottom: 10px;
+    border: 1px solid rgba(229,231,235,.92);
+    box-shadow: var(--shadow-sm);
+  }
+  .mode-1 { background: #F1F8F4; border-color: #CDE7D8; }
+  .mode-2 { background: #FFF8ED; border-color: #F5DFAE; }
+  .mode-3 { background: #EEF1FB; border-color: #D4DAF0; }
+  .mode-head { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .mode-num {
+    width: 22px; height: 22px; border-radius: 50%; color: #fff;
+    font-size: 12px; font-weight: 700; display: flex; align-items: center;
+    justify-content: center; flex-shrink: 0;
+  }
+  .mode-1 .mode-num { background: #1D9E75; }
+  .mode-2 .mode-num { background: #BA7517; }
+  .mode-3 .mode-num { background: #4A54B7; }
+  .mode-title { font-size: 14px; font-weight: 800; color: var(--neutral-900); }
+  .mode-cost {
+    display: inline-block; font-size: 10.5px; font-weight: 700;
+    padding: 3px 9px; border-radius: 100px; margin-left: auto; white-space: nowrap;
+  }
+  .mode-1 .mode-cost { background: #DBEFE1; color: #1D7A54; }
+  .mode-2 .mode-cost { background: #F5E3C4; color: #8A5A0E; }
+  .mode-3 .mode-cost { background: #DCE1F5; color: #33399E; }
+  .mode-row { display: flex; gap: 8px; margin-bottom: 7px; align-items: flex-start; }
+  .mode-row-label { font-size: 11px; font-weight: 700; color: var(--neutral-500); flex-shrink: 0; width: 56px; }
+  .mode-row-val { font-size: 12px; color: var(--neutral-700); line-height: 1.6; flex: 1; }
+  .mode-row-val a { color: var(--brand); text-decoration: underline; word-break: break-all; }
+  .mode-note {
+    font-size: 11px; color: #7A7566; line-height: 1.55; margin-top: 8px;
+    padding-top: 8px; border-top: 0.5px dashed rgba(0,0,0,.12);
+  }
+  .price-table { width: 100%; border-collapse: collapse; margin: 6px 0 2px; font-size: 11.5px; }
+  .price-table th, .price-table td { border: 0.5px solid #D4DAF0; padding: 6px 7px; text-align: left; }
+  .price-table th { background: #E1E5F5; color: #33399E; font-weight: 700; }
+  .price-table td { color: var(--neutral-700); background: #fff; }
+  .mode-row-qr {
+    display: flex; align-items: center; gap: 8px; margin-top: 6px;
+  }
+  .mode-row-qr img {
+    width: 78px; height: auto; border-radius: 6px; flex-shrink: 0;
+    background: #fff; padding: 3px; box-sizing: border-box;
+    border: 1px solid rgba(0,0,0,.06);
+  }
+  .mode-row-qr-text { font-size: 10.5px; color: var(--neutral-500); line-height: 1.5; }
+  .mode-row-qr img { cursor: zoom-in; }
+
+  .qr-lightbox {
+    display: none;
+    position: fixed; inset: 0; z-index: 999;
+    background: rgba(15,26,46,.72);
+    align-items: center; justify-content: center;
+    padding: 24px;
+    cursor: zoom-out;
+  }
+  .qr-lightbox.open { display: flex; }
+  .qr-lightbox img {
+    width: min(320px, 82vw); height: auto;
+    border-radius: 12px; background: #fff; padding: 14px;
+    box-shadow: 0 20px 60px rgba(0,0,0,.35);
+  }
+
   @media (max-width: 560px) {
     body { padding: 18px 14px 24px; }
     .wrap { max-width: 100%; }
@@ -150,54 +235,170 @@
     <h1>WB 共创营 · 材料中心</h1>
     <p class="sub">传媒行业 AI 提效共创计划</p>
   </div>
-  <div class="cards">
-    <a class="card card-navy" href="WB共创营-活动介绍长图.html">
-      <div class="icon icon-navy">🤝</div>
-      <div class="card-body">
-        <div class="kicker">项目认识</div>
-        <h2>AI 共创坊 · 活动介绍</h2>
-        <p>共创坊是什么、您将获得什么<br/>适合哪些岗位 · 如何申请</p>
+
+  <div class="layout-grid">
+    <div class="col-modes">
+      <div class="modes-title">🤝 共创合作方式</div>
+
+      <div class="mode-card mode-1">
+    <div class="mode-head">
+      <div class="mode-num">1</div>
+      <div class="mode-title">架构师共创工作坊</div>
+      <span class="mode-cost">免费 · 自闭环</span>
+    </div>
+    <div class="mode-row">
+      <div class="mode-row-label">执行方</div>
+      <div class="mode-row-val">腾讯云架构师现场配合</div>
+    </div>
+    <div class="mode-row">
+      <div class="mode-row-label">材料</div>
+      <div class="mode-row-val">已有培训材料与参考材料可直接复用，见本页「材料入口」</div>
+    </div>
+    <div class="mode-row">
+      <div class="mode-row-label">前置建议</div>
+      <div class="mode-row-val">
+        工作坊前先用问卷收集客户痛点，内容更有针对性
+        <div class="mode-row-qr">
+          <img src="assets/WB工作流收集问卷-二维码.png" alt="WB 工作流收集问卷二维码" class="qr-zoomable">
+          <div class="mode-row-qr-text">扫码填写工作流收集问卷，围绕真实工作流场景做小范围共创和打磨</div>
+        </div>
       </div>
-      <span class="arrow">›</span>
-    </a>
-    <a class="card" href="WB共创营工作坊材料.html">
-      <div class="icon icon-blue">📖</div>
-      <div class="card-body">
-        <div class="kicker">入门学习</div>
-        <h2>WorkBuddy 从 0 到 1</h2>
-        <p>传媒人的 AI 提效完全入门手册<br/>下载安装 · 界面导览 · Skill 搭建 · 全流程</p>
-      </div>
-      <span class="arrow">›</span>
-    </a>
-    <a class="card card-amber" href="https://cts-no10-media2.devcloud.woa.com/api/v1/public/team-docs/7eab80d1939df2e08da55612ab8a725868c4b8196f56475a073486bf896a30eb/view" target="_blank" rel="noopener noreferrer">
-      <div class="icon icon-amber">🔗</div>
-      <div class="card-body">
-        <div class="kicker">实战参考</div>
-        <h2>WorkBuddy 使用经验分享</h2>
-        <p>从安装上手到职场实战场景<br/>邮件文档 · PPT 调研 · 进阶技巧</p>
-      </div>
-      <span class="arrow">›</span>
-    </a>
-    <a class="card card-teal" href="WB共创营行业Skill资源库.html">
-      <div class="icon icon-teal">🧩</div>
-      <div class="card-body">
-        <div class="kicker">资源沉淀</div>
-        <h2>行业 Skill 资源库</h2>
-        <p>按场景标签筛选共创营沉淀 Skill<br/>能力介绍 · 适用岗位 · 后续下载入口</p>
-      </div>
-      <span class="arrow">›</span>
-    </a>
-    <a class="card card-navy" href="WB参考材料库.html">
-      <div class="icon icon-navy">🗂</div>
-      <div class="card-body">
-        <div class="kicker">岗位参考</div>
-        <h2>参考材料库</h2>
-        <p>按岗位 / 场景筛选培训与参考材料<br/>标题摘要 · 延伸阅读 · 可跳转入口</p>
-      </div>
-      <span class="arrow">›</span>
-    </a>
+    </div>
+    <div class="mode-row">
+      <div class="mode-row-label">适合场景</div>
+      <div class="mode-row-val">预算有限、希望快速上手、可复用现有材料</div>
+    </div>
+    <div class="mode-note">好处：行业内自闭环，免费。⚠️ 共创期间沉淀的 skill 和客户建议需反馈给 <strong>pirateli</strong>，用于资源库持续沉淀。</div>
   </div>
+
+  <div class="mode-card mode-2">
+    <div class="mode-head">
+      <div class="mode-num">2</div>
+      <div class="mode-title">WorkBuddy 专项课程/工作坊</div>
+      <span class="mode-cost">付费 · 4万/节</span>
+    </div>
+    <div class="mode-row">
+      <div class="mode-row-label">执行方</div>
+      <div class="mode-row-val">WB 官方讲师，支持到客户现场授课</div>
+    </div>
+    <div class="mode-row">
+      <div class="mode-row-label">课程文档</div>
+      <div class="mode-row-val"><a href="https://doc.weixin.qq.com/doc/w3_AJEAJAZaACoCNQ8cTVx68ToyFROwJ?scode=AJEAIQdfAAoqbXecArAOoA1QYmAFQ" target="_blank" rel="noopener noreferrer">WorkBuddy 助力工作提效</a></div>
+    </div>
+    <div class="mode-row">
+      <div class="mode-row-label">内容特点</div>
+      <div class="mode-row-val">只讲 WorkBuddy，不讲其他产品，专注度、专业度高；现场带教，指引学员从零到一搭建产品 demo</div>
+    </div>
+    <div class="mode-row">
+      <div class="mode-row-label">适合场景</div>
+      <div class="mode-row-val">客户希望聚焦 WB 本身，且看重"专家级讲师出席"</div>
+    </div>
+  </div>
+
+  <div class="mode-card mode-3">
+    <div class="mode-head">
+      <div class="mode-num">3</div>
+      <div class="mode-title">腾讯学堂「AI 助力个人办公提效」</div>
+      <span class="mode-cost">两种计费</span>
+    </div>
+    <div class="mode-row">
+      <div class="mode-row-label">执行方</div>
+      <div class="mode-row-val">腾讯学堂讲师授课，WB 作为核心演示工具</div>
+    </div>
+    <div class="mode-row">
+      <div class="mode-row-label">课程文档</div>
+      <div class="mode-row-val"><a href="https://doc.weixin.qq.com/doc/w3_AJEAJAZaACoCNOlrwWlgdSCmXVwJ8?scode=AJEAIQdfAAoZGtxOGUAOoA1QYmAFQ" target="_blank" rel="noopener noreferrer">腾讯学堂 AI 助力个人办公提效</a></div>
+    </div>
+    <div class="mode-row">
+      <div class="mode-row-label">内容特点</div>
+      <div class="mode-row-val">不只讲 WB，也讲 AI 行业趋势、其他 AI 产品，并提供典型场景演示；开课前可联系讲师微调侧重点</div>
+    </div>
+    <table class="price-table">
+      <tr><th>计费模式</th><th>单价</th><th>说明</th></tr>
+      <tr><td>虚拟结算</td><td>3500/节</td><td>客户不用付费，内部虚拟结算</td></tr>
+      <tr><td>客户付费</td><td>3万/节</td><td>我们全额计收，支持线下到客户现场</td></tr>
+    </table>
+    <div class="mode-row" style="margin-top:6px;">
+      <div class="mode-row-label">适合场景</div>
+      <div class="mode-row-val">客户希望了解 AI 行业全景，不局限于单一产品</div>
+    </div>
+  </div>
+    </div>
+
+    <div class="col-cards">
+      <div class="modes-title">📚 材料入口</div>
+      <div class="cards">
+        <a class="card card-navy" href="WB共创营-活动介绍长图.html">
+          <div class="icon icon-navy">🤝</div>
+          <div class="card-body">
+            <div class="kicker">项目认识</div>
+            <h2>AI 共创坊 · 活动介绍</h2>
+            <p>共创坊是什么、您将获得什么<br/>适合哪些岗位 · 如何申请</p>
+          </div>
+          <span class="arrow">›</span>
+        </a>
+        <a class="card" href="WB共创营工作坊材料.html">
+          <div class="icon icon-blue">📖</div>
+          <div class="card-body">
+            <div class="kicker">入门学习</div>
+            <h2>WorkBuddy 从 0 到 1（可对外产品说明书）</h2>
+            <p>传媒人的 AI 提效完全入门手册<br/>下载安装 · 界面导览 · Skill 搭建 · 全流程</p>
+          </div>
+          <span class="arrow">›</span>
+        </a>
+        <a class="card card-amber" href="https://cts-no10-media2.devcloud.woa.com/api/v1/public/team-docs/7eab80d1939df2e08da55612ab8a725868c4b8196f56475a073486bf896a30eb/view" target="_blank" rel="noopener noreferrer">
+          <div class="icon icon-amber">🔗</div>
+          <div class="card-body">
+            <div class="kicker">实战参考</div>
+            <h2>WorkBuddy 培训材料（可面客PPT）</h2>
+            <p>从安装上手到职场实战场景<br/>邮件文档 · PPT 调研 · 进阶技巧</p>
+          </div>
+          <span class="arrow">›</span>
+        </a>
+        <a class="card card-teal" href="WB共创营行业Skill资源库.html">
+          <div class="icon icon-teal">🧩</div>
+          <div class="card-body">
+            <div class="kicker">资源沉淀</div>
+            <h2>行业 Skill 资源库</h2>
+            <p>按场景标签筛选共创营沉淀 Skill<br/>能力介绍 · 适用岗位 · 后续下载入口</p>
+          </div>
+          <span class="arrow">›</span>
+        </a>
+        <a class="card card-navy" href="WB参考材料库.html">
+          <div class="icon icon-navy">🗂</div>
+          <div class="card-body">
+            <div class="kicker">岗位参考</div>
+            <h2>参考材料库</h2>
+            <p>按岗位 / 场景筛选培训与参考材料<br/>标题摘要 · 延伸阅读 · 可跳转入口</p>
+          </div>
+          <span class="arrow">›</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
   <div class="footer">腾讯云文化传媒行业线 × WorkBuddy · 2026</div>
 </div>
+
+<div class="qr-lightbox" id="qrLightbox">
+  <img src="" alt="二维码放大" id="qrLightboxImg">
+</div>
+
+<script>
+  (function () {
+    var lightbox = document.getElementById('qrLightbox');
+    var lightboxImg = document.getElementById('qrLightboxImg');
+    document.querySelectorAll('.qr-zoomable').forEach(function (img) {
+      img.addEventListener('click', function (e) {
+        e.stopPropagation();
+        lightboxImg.src = img.src;
+        lightbox.classList.add('open');
+      });
+    });
+    lightbox.addEventListener('click', function () {
+      lightbox.classList.remove('open');
+    });
+  })();
+</script>
 </body>
 </html>
