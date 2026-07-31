@@ -2,8 +2,8 @@ window.REFERENCE_MATERIALS_DATA = {
   "meta": {
     "title": "参考材料库",
     "sourceFile": "参考材料库.xlsx",
-    "generatedAt": "2026-07-17 16:54",
-    "totalMaterials": 15,
+    "generatedAt": "2026-07-31 13:02",
+    "totalMaterials": 19,
     "roles": [
       "HR",
       "财务",
@@ -195,6 +195,54 @@ window.REFERENCE_MATERIALS_DATA = {
       "source": "腾讯学堂",
       "materialType": "参考材料",
       "slug": "课程工作坊-workbuddy助力工作提效"
+    },
+    {
+      "id": "material-16",
+      "order": 16,
+      "role": "通用",
+      "dimension": "scene",
+      "title": "Workbuddy官方指南",
+      "summary": "全书分为四大板块，分别是使用手册、实战案例、进阶系统、岗位与行业，其中团队投入精力最多、核心价值最高的是实战案例部分，收录了多位作者的真实落地经验，比如苍何搭建的AI视频创作团队（已使用2.79万次）、GEO专家（已使用1.65万次）的操作方法，还覆盖了律师用WorkBuddy整理诉讼案件等跨行业场景",
+      "linkUrl": "https://workbuddy.homes/",
+      "source": "Workbuddy",
+      "materialType": "参考材料",
+      "slug": "workbuddy官方指南"
+    },
+    {
+      "id": "material-17",
+      "order": 17,
+      "role": "通用",
+      "dimension": "scene",
+      "title": "刚刚，把Office装进了WorkBuddy，实现了人机双写",
+      "summary": "WorkBuddy上线业内首创的「人机双写」功能，支持AI直接在原生的在线/本地Office文件中实时编辑，覆盖文档润色、表格分析、PPT制作等多场景，实现人+人+AI协同办公",
+      "linkUrl": "https://mp.weixin.qq.com/s/ZBXLi2cxeCMFBMeMuyRiiA",
+      "source": "Workbuddy",
+      "materialType": "文章",
+      "slug": "刚刚把office装进了workbuddy实现了人机双写"
+    },
+    {
+      "id": "material-18",
+      "order": 18,
+      "role": "通用",
+      "dimension": "scene",
+      "title": "最高节能率90%！这个7人团队用AI玩转创业",
+      "summary": "借助WorkBuddy将自身行业经验沉淀为AI思维框架，实现项目自动化管理、多情景方案高效输出与行业情报自动推送工作流AI化，支撑团队同步推进多项目，最高节能率达90%",
+      "linkUrl": "https://mp.weixin.qq.com/s/djJ_ngiJKxK6XR68taQCTA",
+      "source": "Workbuddy",
+      "materialType": "文章",
+      "slug": "最高节能率90这个7人团队用ai玩转创业"
+    },
+    {
+      "id": "material-19",
+      "order": 19,
+      "role": "通用",
+      "dimension": "scene",
+      "title": "腾讯云SkillPay上线，Skill能挣钱了！",
+      "summary": "SkillPay打通技能分发、Agent调用与支付链路，支持企业三步低门槛上架付费技能、用户两步在对话流内直接用微信支付AI专属卡调用服务，向全量商家开放Agent商业化能力",
+      "linkUrl": "https://mp.weixin.qq.com/s/TtxqzHPvZX7Ff6GGHgHp-g",
+      "source": "腾讯云",
+      "materialType": "文章",
+      "slug": "腾讯云skillpay上线skill能挣钱了"
     }
   ]
 };
